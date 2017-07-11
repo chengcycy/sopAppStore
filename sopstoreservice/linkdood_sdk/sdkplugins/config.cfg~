@@ -1,0 +1,12 @@
+{
+	"comment":"1:应用根据实际情况添加需要添加的动态库到本文件pluginName标识下；2. name字段只填写插件名称即可，比如name字段值为test,则在win平台，会加载同目录下test.dll. linux 和 OSX 下会加载libtest.so",
+    "pluginName": [
+        {
+            "name": "sopstoreplugin"
+        },
+{
+            "name": "lddplugin"
+        }
+    ]
+
+}

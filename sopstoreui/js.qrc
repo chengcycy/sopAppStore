@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>js/Helper.js</file>
+        <file>js/appinfo.josn</file>
+    </qresource>
+</RCC>

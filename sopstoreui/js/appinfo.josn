@@ -1,0 +1,26 @@
+[
+	{
+		"type":2,
+		"sopid":"com.vrv.linkDood",
+		"pkgpath":"com.vrv.linkDood-1.0.46.sop",
+		"scheme":"linkdood:showlinkdood?id=14324535&pwd=123456",
+		"name":"linkdood"
+
+	},
+	{
+                "type":1,
+		"sopid":"com.vrv.keepApp",
+		"pkgpath":"com.vrv.keepApp-1.0.0.sop",
+		"scheme":"keepApp:keepApp?id=123&pwd=123456",
+		"name":"keepApp"
+
+	},
+		{
+		"type":2,
+		"sopid":"com.vrv.qumar",
+		"pkgpath":"com.vrv.qumar-1.0.0.sop",
+		"scheme":"qumar:qumar?id=123&pwd=123456",
+		"name":"qunar"
+
+	}
+]

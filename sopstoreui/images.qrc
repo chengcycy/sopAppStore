@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/sopstoreui.png</file>
+        <file>res/wellcomepage.png</file>
+    </qresource>
+</RCC>
