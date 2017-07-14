@@ -136,6 +136,7 @@ void sopstoreui_Workspace::onLaunchComplete(Option option, const QStringList& pa
 
 void sopstoreui_Workspace::onInstallStatusChanged(const QString &sopid, const QString &pkgPath, CPackageInfo::PackageStatus status, CPackageInfo::PackageError error, int percent)
 {
-
+    qDebug()<<Q_FUNC_INFO;
+    getSystemAppList();
 }
 
