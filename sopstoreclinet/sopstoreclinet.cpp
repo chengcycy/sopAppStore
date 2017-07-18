@@ -11,7 +11,7 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
 SopStoreClinet::~SopStoreClinet()
 {
     qDebug()<<Q_FUNC_INFO;
-    loginout();
+//    loginout();
 }
 
 void SopStoreClinet::writeData(QString content)
@@ -49,6 +49,11 @@ void SopStoreClinet::preLogin(QString json)
 void SopStoreClinet::loginout()
 {
     GET_DATA(loginout);
+}
+
+void SopStoreClinet::setMessageRead(QString json)
+{
+    GET_DATA_PARAMS(setMessageRead,json);
 }
 
 void SopStoreClinet::slidesshow(QString json)

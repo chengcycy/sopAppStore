@@ -39,6 +39,13 @@ public:
     Q_INVOKABLE void preLogin(QString json);
     Q_INVOKABLE void loginout();
 
+    /**
+      setMessageRead:设置消息已读写
+      targetId:long
+      msgId:long
+      */
+    Q_INVOKABLE void setMessageRead(QString json);
+
     Q_INVOKABLE void slidesshow(QString json);
     Q_INVOKABLE void queryAppStore(QString json);
     Q_INVOKABLE void queryEnOS(QString json);
@@ -63,7 +70,7 @@ signals:
     void installApp(QString appPath);
     void uninstallApp(QString sopId);
     void getSystemApps();
-//    void refreshData(QString json);
+
 public slots:
     void onLoginAuthCodeResult(QString authCode);
     void onGetSystemApps(QString json);
@@ -82,7 +89,7 @@ public slots:
     void onUpdateAccountResult(QString json);
 
 private slots:
-    //void startNextDownload();
+
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
     void downloadFinished();
     void downloadReadyRead();

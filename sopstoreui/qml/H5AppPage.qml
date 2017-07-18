@@ -70,10 +70,10 @@ CPage {
 
 
             //      url:'http://172.25.76.6:8080'
-               url:'http://172.16.16.57:8080'
+            //   url:'http://172.16.16.57:8080'
 
             z:parent.z + 9999
-          //  url:mainApp.appUrl
+            url:mainApp.appUrl
             width:parent.width
             height: parent.height
             clip: true

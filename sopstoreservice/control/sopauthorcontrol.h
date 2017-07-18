@@ -15,10 +15,12 @@ public:
     void  changePassword(QString oldPwd,QString newPwd);
     void _changePassword(service::ErrorInfo code);
     void _login(service::ErrorInfo code, int64 userId,int64 time, const std::string veryImg);
-    void _logout(service::ErrorInfo code);
+    void _logout(service::ErrorInfo code,bool noticeClient);
 
     void _msgNoticeCb(std::shared_ptr<Msg>msg);
     void _recontactCb(int, std::vector<std::shared_ptr<Chat> >&msgList);
+    void _regOfflineMsgCb(std::vector<OfflineMsg>&msgs);
+    void setMsgRead(qint64 targetId,qint64 msgId);
 
     void updateAccountInfo(Account user);
     void _updateAccountInfo(service::ErrorInfo code);
@@ -48,13 +50,16 @@ signals:
                     int unReadNumber);
 public slots:
 private:
+    void msgNotice(qint64 targetId,qint64 msgId,QString msg,bool showUnread=true);
+
     QThread mWorkThread;
     AppMsgNoticeThread* m_pWorkControl;
 
     std::shared_ptr<service::IAuthService> m_pAuthorService;
     std::shared_ptr<service::IChatService> m_pChatService;
     std::shared_ptr<service::IUserService> m_pUserService;
-    int64  mUserId;
+    int64   mUserId;
+    std::string mUser, mPwd, mServer;
 };
 
 #endif // SOPAUTHORCONTROL_H

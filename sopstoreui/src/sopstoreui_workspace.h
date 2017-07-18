@@ -35,6 +35,7 @@ public:
     sopstoreui_Workspace();
     virtual ~sopstoreui_Workspace();
     void onActive();
+    void onDeactive();
     void onLaunchComplete(Option option, const QStringList& params);
 
 signals:

@@ -44,6 +44,7 @@ public:
 
     Q_INVOKABLE void downloadFile(QString url);
     Q_INVOKABLE void getLoginAuthCode(QString json);
+    Q_INVOKABLE void setMessageRead(QString json);
 signals:
     void preLoginResult(QString json);
     void loginResult(QString json);

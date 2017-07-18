@@ -76,7 +76,7 @@ QUrl sopstoreui_Workspace::appUrl()
 sopstoreui_Workspace::sopstoreui_Workspace()
     : CWorkspace()
 {
-//serviceIP();
+    //serviceIP();
     mNeedNoticeRefreshData = false;
     qmlRegisterType<SopStoreClinet>("com.app.sopApp",1,0,"SopAppClient");
 
@@ -96,6 +96,8 @@ sopstoreui_Workspace::sopstoreui_Workspace()
 sopstoreui_Workspace::~sopstoreui_Workspace()
 {
     qDebug()<<Q_FUNC_INFO;
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("clientStatus",0);
 }
 
 void sopstoreui_Workspace::onActive()
@@ -103,15 +105,23 @@ void sopstoreui_Workspace::onActive()
     //    if(mNeedNoticeRefreshData){
     //        mNeedNoticeRefreshData = false;
     //    }
-    CProcessManager proMgr;
-    QList<int> pids = proMgr.processList();
-    for(auto i : pids){
-        if(proMgr.sopidByPid(i) == "com.syberos.browser"){
-            qDebug()<<Q_FUNC_INFO<<"kill browser.";
-            proMgr.killProcessByPid(i);
-        }
-    }
+    //    CProcessManager proMgr;
+    //    QList<int> pids = proMgr.processList();
+    //    for(auto i : pids){
+    //        if(proMgr.sopidByPid(i) == "com.syberos.browser"){
+    //            qDebug()<<Q_FUNC_INFO<<"kill browser.";
+    //            proMgr.killProcessByPid(i);
+    //        }
+    //    }
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("clientStatus",1);
     emit refreshData();
+}
+
+void sopstoreui_Workspace::onDeactive()
+{
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("clientStatus",0);
 }
 
 void sopstoreui_Workspace::onLaunchComplete(Option option, const QStringList& params)
@@ -132,6 +142,9 @@ void sopstoreui_Workspace::onLaunchComplete(Option option, const QStringList& pa
     default:
         break;
     }
+
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("clientStatus",1);
 }
 
 void sopstoreui_Workspace::onInstallStatusChanged(const QString &sopid, const QString &pkgPath, CPackageInfo::PackageStatus status, CPackageInfo::PackageError error, int percent)

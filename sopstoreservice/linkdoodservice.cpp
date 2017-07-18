@@ -362,6 +362,12 @@ void LinkDoodService::getLoginAuthCode(QString json)
     mpAuthService->getLoginAuthCode(req);
 }
 
+void LinkDoodService::setMessageRead(QString json)
+{
+    QJsonObject obj = jsonParce(json);
+    mpAuthService->setMsgRead(obj.value("targetId").toDouble(),obj.value("msgId").toDouble());
+}
+
 void LinkDoodService::onLoginAuthCodeResult(QString authCode)
 {
     emit loginAuthCodeResult(authCode);
