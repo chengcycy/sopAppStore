@@ -50,7 +50,7 @@ signals:
                     int unReadNumber);
 public slots:
 private:
-    void msgNotice(qint64 targetId,qint64 msgId,QString msg,bool showUnread=true);
+    void msgNotice(qint64 targetId,qint64 msgId,QString msg,bool showUnread=true,bool offline=true);
 
     QThread mWorkThread;
     AppMsgNoticeThread* m_pWorkControl;

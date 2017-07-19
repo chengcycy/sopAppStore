@@ -11,7 +11,7 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
 SopStoreClinet::~SopStoreClinet()
 {
     qDebug()<<Q_FUNC_INFO;
-//    loginout();
+    //    loginout();
 }
 
 void SopStoreClinet::writeData(QString content)
@@ -125,6 +125,17 @@ void SopStoreClinet::getLoginAuthCode(QString json)
     GET_DATA_PARAMS(getLoginAuthCode,json);
 }
 
+void SopStoreClinet::getOfflineMsg()
+{
+    QJsonDocument doc;
+    doc.setArray(mJsonMsgs);
+    jsonParce(doc.toJson(),"getOfflineMsg");
+
+    while(mJsonMsgs.size()>0){
+        mJsonMsgs.removeAt(mJsonMsgs.size()-1);
+    }
+}
+
 void SopStoreClinet::onLoginAuthCodeResult(QString authCode)
 {
     qDebug()<<Q_FUNC_INFO<<"authCode:"<<authCode;
@@ -220,7 +231,15 @@ void SopStoreClinet::onChangedPwdResult(QString json)
 void SopStoreClinet::onNoticeLastMsg(QString msgContent)
 {
     qDebug()<<Q_FUNC_INFO<<"msg:"<<msgContent;
-    emit noticeLastMsg(msgContent);
+    QJsonDocument doc = QJsonDocument::fromJson(msgContent.toUtf8().data(),&err);
+    if(err.error == QJsonParseError::NoError){
+        QJsonObject obj = doc.object();
+        if(obj.value("offline").toBool() == true){
+            mJsonMsgs.append(obj);
+        }else{
+            emit noticeLastMsg(msgContent);
+        }
+    }
 }
 
 void SopStoreClinet::onUpdateAccountResult(QString json)

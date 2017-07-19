@@ -74,7 +74,7 @@ void SopAuthorControl::_logout(service::ErrorInfo code,bool noticeClient)
 void SopAuthorControl::_msgNoticeCb(std::shared_ptr<Msg> msg)
 {
 
-    msgNotice(msg->targetId,msg->msgId,msg->body.c_str());
+    msgNotice(msg->targetId,msg->msgId,msg->body.c_str(),true,false);
 
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     int clientStatus = config.value("clientStatus",0).toInt();
@@ -96,7 +96,7 @@ void SopAuthorControl::_recontactCb(int, std::vector<std::shared_ptr<Chat> > &ms
 {
     for(auto i : msgList){
         qDebug()<<Q_FUNC_INFO<<"msgList:"<<i->lastMsg.c_str();
-        msgNotice(i->sendUserId,i->lastMsgId,i->lastMsg.c_str(),i->unreadCount>0);
+        msgNotice(i->sendUserId,i->lastMsgId,i->lastMsg.c_str(),i->unreadCount>0,true);
     }
 }
 
@@ -105,7 +105,7 @@ void SopAuthorControl::_regOfflineMsgCb(std::vector<OfflineMsg> &msgs)
     qDebug()<<Q_FUNC_INFO<<"offline msg==========================";
     for(auto item:msgs){
        if(item.msg != NULL){
-           msgNotice(item.msg->targetId,item.msg->msgId,item.msg->body.c_str());
+           msgNotice(item.msg->targetId,item.msg->msgId,item.msg->body.c_str(),true,true);
        }
     }
 }
@@ -151,7 +151,7 @@ void SopAuthorControl::_getLoginAuthCode(service::ErrorInfo code, const std::str
     emit loginAuthCodeResult(QString::fromStdString(authCode));
 }
 
-void SopAuthorControl::msgNotice(qint64 targetId, qint64 msgId, QString msg,bool showUnread)
+void SopAuthorControl::msgNotice(qint64 targetId, qint64 msgId, QString msg,bool showUnread,bool offline)
 {
     QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(msg.toUtf8().data(),&err);
@@ -164,6 +164,7 @@ void SopAuthorControl::msgNotice(qint64 targetId, qint64 msgId, QString msg,bool
         obj.insert("msgId",msgId);
         obj.insert("message",message);
         obj.insert("showUnread",showUnread);
+        obj.insert("offline",offline);
         doc1.setObject(obj);
         emit noticeLastMsg(doc1.toJson());
     }

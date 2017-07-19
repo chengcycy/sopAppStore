@@ -62,6 +62,7 @@ public:
     Q_INVOKABLE void getAppLoginStatus();
     Q_INVOKABLE void getSystemAppList();
     Q_INVOKABLE void getLoginAuthCode(QString json);
+    Q_INVOKABLE void getOfflineMsg();
 signals:
     void voiceCall(QString param);
     void openApp(QString param);
@@ -98,7 +99,7 @@ private:
     QNetworkAccessManager mNetMgr;
     QNetworkReply *mCurDownLoadReply;
     QFile mOutputFile;
-
+    QJsonArray mJsonMsgs;
     void initDBusConnect();
     void jsonParce(QString json,QString fName);
 };
