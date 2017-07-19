@@ -231,6 +231,7 @@ void SopStoreClinet::onChangedPwdResult(QString json)
 void SopStoreClinet::onNoticeLastMsg(QString msgContent)
 {
     qDebug()<<Q_FUNC_INFO<<"msg:"<<msgContent;
+    QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(msgContent.toUtf8().data(),&err);
     if(err.error == QJsonParseError::NoError){
         QJsonObject obj = doc.object();
