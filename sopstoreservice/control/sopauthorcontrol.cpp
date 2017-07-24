@@ -157,7 +157,7 @@ void SopAuthorControl::msgNotice(qint64 targetId, qint64 msgId, QString msg,bool
     QJsonDocument doc = QJsonDocument::fromJson(msg.toUtf8().data(),&err);
     QString message = doc.object().value("body").toString();
 
-    if(err.error == QJsonParseError::NoError){
+    if(err.error == QJsonParseError::NoError && !message.isEmpty()){
         QJsonDocument doc1;
         QJsonObject obj;
         obj.insert("targetId",targetId);

@@ -6,6 +6,7 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
 {
 
     initDBusConnect();
+    connect(&mNetworkMgr,SIGNAL(networkStatusChanged(bool,CNetworkManager::NetworkType)),this,SLOT(onNetworkStatusChanged(bool,CNetworkManager::NetworkType)));
 }
 
 SopStoreClinet::~SopStoreClinet()
@@ -136,6 +137,17 @@ void SopStoreClinet::getOfflineMsg()
     }
 }
 
+bool SopStoreClinet::isNetworkAvailable()
+{
+    bool status = mNetworkMgr.isNetworkAvailable();
+    qDebug()<<Q_FUNC_INFO<<"networkStatus:"<<status;
+    QJsonDocument doc;
+    QJsonObject obj;
+    obj.insert("status",status);
+    doc.setObject(obj);
+    emit jsonParce(doc.toJson(),"isNetworkAvailable");
+}
+
 void SopStoreClinet::onLoginAuthCodeResult(QString authCode)
 {
     qDebug()<<Q_FUNC_INFO<<"authCode:"<<authCode;
@@ -238,7 +250,7 @@ void SopStoreClinet::onNoticeLastMsg(QString msgContent)
         if(obj.value("offline").toBool() == true){
             mJsonMsgs.append(obj);
         }else{
-            emit noticeLastMsg(msgContent);
+            jsonParce(msgContent,"noticeLastMsg");
         }
     }
 }
@@ -308,6 +320,16 @@ void SopStoreClinet::downloadFinished()
 void SopStoreClinet::downloadReadyRead()
 {
     mOutputFile.write(mCurDownLoadReply->readAll());
+}
+
+void SopStoreClinet::onNetworkStatusChanged(bool connected, CNetworkManager::NetworkType type)
+{
+    qDebug()<<Q_FUNC_INFO<<"networkStatus:"<<connected;
+    QJsonDocument doc;
+    QJsonObject obj;
+    obj.insert("status",connected);
+    doc.setObject(obj);
+    emit jsonParce(doc.toJson(),"isNetworkAvailable");
 }
 
 void SopStoreClinet::callPhone(QString json)

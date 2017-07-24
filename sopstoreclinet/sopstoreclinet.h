@@ -11,6 +11,7 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <cnetworkmanager.h>
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -63,6 +64,8 @@ public:
     Q_INVOKABLE void getSystemAppList();
     Q_INVOKABLE void getLoginAuthCode(QString json);
     Q_INVOKABLE void getOfflineMsg();
+    Q_INVOKABLE bool isNetworkAvailable();
+
 signals:
     void voiceCall(QString param);
     void openApp(QString param);
@@ -94,12 +97,14 @@ private slots:
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
     void downloadFinished();
     void downloadReadyRead();
+    void onNetworkStatusChanged(bool connected, CNetworkManager::NetworkType type);
 
 private:
     QNetworkAccessManager mNetMgr;
     QNetworkReply *mCurDownLoadReply;
     QFile mOutputFile;
     QJsonArray mJsonMsgs;
+    CNetworkManager mNetworkMgr;
     void initDBusConnect();
     void jsonParce(QString json,QString fName);
 };
