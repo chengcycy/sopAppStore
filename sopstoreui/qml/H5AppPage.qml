@@ -7,13 +7,14 @@ import QtWebChannel 1.0
 import com.app.sopApp 1.0
 
 CPage {
+    id:mainPage
+
     property alias  webViewPage: webView
 
     statusBarHoldEnabled: true
     statusBarHoldItemColor: "black"
     orientationPolicy:CPageOrientation.Automatic
     clip: true
-
     contentAreaItem: Flickable{
         id:root
         anchors.fill: parent
@@ -52,6 +53,9 @@ CPage {
             onGetSystemApps:{
                 mainApp.getSystemAppList();
             }
+            onLoginoutUI:{
+                mainApp.closeBrowser();
+            }
         }
         Connections{
             target: mainApp
@@ -70,7 +74,7 @@ CPage {
 
 
             //      url:'http://172.25.76.6:8080'
-           //    url:'http://192.168.65.3:8080'
+            //    url:'http://192.168.65.3:8080'
 
             z:parent.z + 9999
             url:mainApp.appUrl

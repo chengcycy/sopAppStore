@@ -43,6 +43,7 @@ signals:
     void refreshData();
     void systemApps(QString json);
 public slots:
+    void closeBrowser();
     void onInstallStatusChanged(const QString& sopid,
                                 const QString& pkgPath,
                                 CPackageInfo::PackageStatus status,

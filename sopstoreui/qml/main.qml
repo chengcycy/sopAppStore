@@ -4,7 +4,6 @@ CPageStackWindow {
 
     keyHandle: false
     onBackKey: {
-
         var url =startPage.webViewPage.url.toString();
         console.log('log:'+url)
         if(mainApp.pageType(url) === 0||mainApp.pageType(url) === -1 || !startPage.webViewPage.canGoBack){

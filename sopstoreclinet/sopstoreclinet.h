@@ -74,6 +74,7 @@ signals:
     void installApp(QString appPath);
     void uninstallApp(QString sopId);
     void getSystemApps();
+    void loginoutUI();
 
 public slots:
     void onLoginAuthCodeResult(QString authCode);

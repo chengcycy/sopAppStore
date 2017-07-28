@@ -185,6 +185,7 @@ void SopStoreClinet::onLoginoutResult(QString json)
 void SopStoreClinet::onPreLoginResult(QString json)
 {
     jsonParce(json,"preLogin");
+//     emit loginoutUI();
 }
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)

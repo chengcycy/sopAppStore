@@ -37,15 +37,6 @@ void sopstoreui_Workspace::openApp(QString url)
 {
     if(url.contains("browser:")){
         mNeedNoticeRefreshData = true;
-        CProcessManager proMgr;
-        QList<int> pids = proMgr.processList();
-
-        for(auto i : pids){
-            qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
-            if(proMgr.sopidByPid(i) == "com.syberos.browser"){
-                proMgr.killProcessByPid(i);
-            }
-        }
     }
     qApp->openUrl(url);
 }
@@ -66,6 +57,24 @@ void sopstoreui_Workspace::getSystemAppList()
     emit systemApps(json);
 }
 
+void sopstoreui_Workspace::closeBrowser()
+{
+    qDebug()<<Q_FUNC_INFO<<"==================closeBrowser===========================";
+//    if(mNeedNoticeRefreshData){
+//        mNeedNoticeRefreshData = false;
+//        return;
+//    }
+    CProcessManager proMgr;
+    QList<int> pids = proMgr.processList();
+
+    for(auto i : pids){
+        qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
+        if(proMgr.sopidByPid(i) == "com.syberos.browser"){
+            proMgr.killProcessByPid(i);
+        }
+    }
+}
+
 QUrl sopstoreui_Workspace::appUrl()
 {
     QUrl url;
@@ -77,7 +86,7 @@ sopstoreui_Workspace::sopstoreui_Workspace()
     : CWorkspace()
 {
     //serviceIP();
-    mNeedNoticeRefreshData = false;
+    mNeedNoticeRefreshData = true;
     qmlRegisterType<SopStoreClinet>("com.app.sopApp",1,0,"SopAppClient");
 
     mSysPkgMgr = QSharedPointer<CSystemPackageManager>(new CSystemPackageManager(this));
@@ -98,21 +107,11 @@ sopstoreui_Workspace::~sopstoreui_Workspace()
     qDebug()<<Q_FUNC_INFO;
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     config.setValue("clientStatus",0);
+//    closeBrowser();
 }
 
 void sopstoreui_Workspace::onActive()
 {
-    //    if(mNeedNoticeRefreshData){
-    //        mNeedNoticeRefreshData = false;
-    //    }
-    //    CProcessManager proMgr;
-    //    QList<int> pids = proMgr.processList();
-    //    for(auto i : pids){
-    //        if(proMgr.sopidByPid(i) == "com.syberos.browser"){
-    //            qDebug()<<Q_FUNC_INFO<<"kill browser.";
-    //            proMgr.killProcessByPid(i);
-    //        }
-    //    }
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     config.setValue("clientStatus",1);
     emit refreshData();
