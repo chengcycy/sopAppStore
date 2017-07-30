@@ -64,15 +64,15 @@ void sopstoreui_Workspace::closeBrowser()
 //        mNeedNoticeRefreshData = false;
 //        return;
 //    }
-    CProcessManager proMgr;
-    QList<int> pids = proMgr.processList();
+//     CProcessManager proMgr;
+//     QList<int> pids = proMgr.processList();
 
-    for(auto i : pids){
-        qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
-        if(proMgr.sopidByPid(i) == "com.syberos.browser"){
-            proMgr.killProcessByPid(i);
-        }
-    }
+//     for(auto i : pids){
+//         qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
+//         if(proMgr.sopidByPid(i) == "com.syberos.browser"){
+//             proMgr.killProcessByPid(i);
+//         }
+//     }
 }
 
 QUrl sopstoreui_Workspace::appUrl()
