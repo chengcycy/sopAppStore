@@ -94,6 +94,10 @@ sopstoreui_Workspace::sopstoreui_Workspace()
 
     m_view = SYBEROS::SyberosGuiCache::qQuickView();
     QObject::connect(m_view->engine(), SIGNAL(quit()), qApp, SLOT(quit()));
+
+    mpClient = QSharedPointer<SopStoreClinet>(new SopStoreClinet(this));
+
+    m_view->rootContext()->setContextProperty("appClient", mpClient.data());
     m_view->rootContext()->setContextProperty("mainApp", this);
     m_view->rootContext()->setContextProperty("globalApp", qApp);
 

@@ -185,7 +185,7 @@ void SopStoreClinet::onLoginoutResult(QString json)
 void SopStoreClinet::onPreLoginResult(QString json)
 {
     jsonParce(json,"preLogin");
-//     emit loginoutUI();
+    //     emit loginoutUI();
 }
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)
@@ -341,7 +341,10 @@ void SopStoreClinet::callPhone(QString json)
 
 void SopStoreClinet::opensopApp(QString json)
 {
-    qDebug()<<Q_FUNC_INFO<<"json:"<<json;
+    if(json.contains("http")||json.contains("https")){
+        json = json.replace("http", "browser");
+        json = json.replace("https", "browser");
+    }
     emit openApp(json);
 }
 void SopStoreClinet::initDBusConnect()

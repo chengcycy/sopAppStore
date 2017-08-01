@@ -1,7 +1,5 @@
 import QtQuick 2.0
 import com.syberos.basewidgets 2.0
-import com.app.sopApp 1.0
-
 import "./me"
 CPageStackWindow {
 
@@ -14,8 +12,8 @@ CPageStackWindow {
         }
     }
 
-    SopAppClient{
-        id:appClient
+    Connections{
+        target: appClient
 
         onOpenApp:{
             var res = JSON.parse(param);
@@ -38,7 +36,7 @@ CPageStackWindow {
             mainApp.closeBrowser();
         }
         onCallback:{
-            console.log('=================json:'+json)
+//            console.log('=================json:'+json)
 
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
