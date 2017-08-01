@@ -42,5 +42,6 @@
         <file>res/images/telphone.png</file>
         <file>res/images/update.png</file>
         <file>res/images/loading.gif</file>
+        <file>res/images/rm_app.png</file>
     </qresource>
 </RCC>

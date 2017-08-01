@@ -92,7 +92,7 @@ CPage {
                 passwordLabelEnabled: false
                 clip: true
 
-                text:"刘霞"
+                text:"于帅"
                 font.pixelSize: 30
                 placeholderText:os.i18n.ctr(qsTr("请输入用户名"))
                 inputMethodHints: Qt.ImhPreferLatin/*|Qt.ImhPreferNumbers*/
