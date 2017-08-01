@@ -51,6 +51,9 @@ CPage {
                 if(currentIndex == (tabView.count -1)){
 
                 }
+                if(currentIndex == 2){
+
+                }
             }
 
             CTab {
