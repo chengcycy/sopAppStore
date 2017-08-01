@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sopconfig syberos:versionCode="7" xmlns:syberos="http://schemas.syberos.com/rpm/res/syberos" syberos:shareUserId="" syberos:sopid="com.vrv.sopstore" syberos:versionName="1.0.7">
+<sopconfig syberos:versionName="1.0.7" syberos:versionCode="7" xmlns:syberos="http://schemas.syberos.com/rpm/res/syberos" syberos:sopid="com.vrv.sopstore" syberos:shareUserId="">
     <uses-permission syberos:name="syberos.permission.ACCESS_APP_PERMISSION"/>
     <uses-permission syberos:name="syberos.permission.ACCESS_DATA_NETWORK"/>
     <uses-permission syberos:name="syberos.permission.ACCESS_NOTIFICATION"/>
@@ -19,11 +19,11 @@
     <uses-permission syberos:name="syberos.permission.READ_IMEI"/>
     <uses-permission syberos:name="syberos.permission.READ_NETWORK_STATE"/>
     <uses-sdk syberos:targetSdkVersion="" syberos:minSdkVersion=""/>
-    <application syberos:name="智慧企业" syberos:description="下载此应用的同时，请将元心手机版本更新为最新版本，更新操作：“设置-系统设置-关于手机-系统更新”升级手机系统。&#xa;智慧企业运行平台移动门户，手机端访问门户系统，收取待办消息，统一各类移动应用入口，同时从用户角度出发切实提高用户体验度。" syberos:icon="res/sopstoreui.png" syberos:debuggable="true">
-        <uiapp syberos:name="智慧企业" syberos:icon="res/sopstoreui.png" syberos:background="" syberos:id="sopstoreui" syberos:exec="bin/sopstoreui" syberos:splash="" syberos:launcher="true">
+    <application syberos:name="智慧企业" syberos:icon="logo/sopstoreui.png" syberos:description="下载此应用的同时，请将元心手机版本更新为最新版本，更新操作：“设置-系统设置-关于手机-系统更新”升级手机系统。&#xa;智慧企业运行平台移动门户，手机端访问门户系统，收取待办消息，统一各类移动应用入口，同时从用户角度出发切实提高用户体验度。" syberos:debuggable="true">
+        <uiapp syberos:exec="bin/sopstoreui" syberos:name="智慧企业" syberos:icon="logo/sopstoreui.png" syberos:splash="" syberos:background="" syberos:id="sopstoreui" syberos:launcher="true">
             <doctype syberos:id=""/>
         </uiapp>
-        <service syberos:name="" syberos:icon="" syberos:background="" syberos:id="sopstoreservice" syberos:exec="bin/sopstoreservice" syberos:splash="" syberos:launcher="false">
+        <service syberos:exec="bin/sopstoreservice" syberos:name="" syberos:icon="" syberos:splash="" syberos:background="" syberos:id="sopstoreservice" syberos:launcher="false">
             <receiver syberos:id="">
                 <event>BOOT_COMPLETE</event>
             </receiver>

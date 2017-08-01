@@ -2,5 +2,23 @@
     <qresource prefix="/">
         <file>res/sopstoreui.png</file>
         <file>res/wellcomepage.png</file>
+        <file>res/images/echo_normal.png</file>
+        <file>res/images/echo_pwd.png</file>
+        <file>res/images/GWGL.png</file>
+        <file>res/images/logo.png</file>
+        <file>res/images/Organization.png</file>
+        <file>res/images/password.png</file>
+        <file>res/images/ring.gif</file>
+        <file>res/images/server.png</file>
+        <file>res/images/TGYY.png</file>
+        <file>res/images/user.png</file>
+        <file>res/images/XTBG.png</file>
+        <file>res/images/XXFB.png</file>
+        <file>res/images/YJ.png</file>
+        <file>res/images/ZZY.jpg</file>
+        <file>res/images/tab_notice.png</file>
+        <file>res/images/tab_me.png</file>
+        <file>res/images/tab_contact.png</file>
+        <file>res/images/tab_apps.png</file>
     </qresource>
 </RCC>

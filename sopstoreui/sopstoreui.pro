@@ -20,7 +20,8 @@ QMAKE_LFLAGS += -Wl,-rpath=$$LIB_DIR -Wl,-Bsymbolic
 
 
 RESOURCES += qml.qrc images.qrc \
-    js.qrc
+    js.qrc \
+    newui.qrc
 
 HEADERS += src/sopstoreui_workspace.h
 
@@ -31,7 +32,7 @@ OTHER_FILES += qml/*.qml
 
 target.path = $$INSTALL_DIR/bin
 
-res.files = res
+res.files = logo
 res.path = $$INSTALL_DIR/
 
 h5app.files = h5
@@ -40,7 +41,14 @@ h5app.path = $$INSTALL_DIR/bin
 INSTALLS += target res h5app
 
 DISTFILES += \
-    js/Helper.js
+    js/Helper.js \
+    qml/apps/AppsMain.qml \
+    qml/component/TabviewStyle.qml \
+    qml/contacts/ContactMain.qml \
+    qml/me/MeMain.qml \
+    qml/notice/NoticeMain.qml \
+    qml/me/Login.qml \
+    qml/MainClient.qml
 
 unix:!macx: LIBS += -L$$OUT_PWD/../sopstoreclinet/ -lsopstoreclinet
 

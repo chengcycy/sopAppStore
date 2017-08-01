@@ -98,7 +98,8 @@ sopstoreui_Workspace::sopstoreui_Workspace()
     m_view->rootContext()->setContextProperty("globalApp", qApp);
 
     qApp->setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, true);
-    m_view->setSource(QUrl("qrc:/qml/main.qml"));
+
+    m_view->setSource(QUrl("qrc:/qml/mainUI.qml"));
     m_view->showFullScreen();
 }
 
