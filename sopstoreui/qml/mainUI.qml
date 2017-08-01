@@ -123,7 +123,7 @@ CPageStackWindow {
             pageStack.clear();
             var page = pageStack.push(Qt.resolvedUrl('./MainClient.qml'));
         }else{
-            gToast.requestToast('登录失败:'+obj.code,"","");
+            gToast.requestToast('登录失败:'+obj.data.code,"","");
         }
     }
 }

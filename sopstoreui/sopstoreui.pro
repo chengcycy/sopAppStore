@@ -18,9 +18,9 @@ PKGCONFIG += syberos-qt-system
 
 QMAKE_LFLAGS += -Wl,-rpath=$$LIB_DIR -Wl,-Bsymbolic
 
-
-RESOURCES += qml.qrc images.qrc \
-    js.qrc \
+#qml.qrc
+RESOURCES +=  images.qrc \
+#    js.qrc \
     newui.qrc
 
 HEADERS += src/sopstoreui_workspace.h
@@ -35,10 +35,10 @@ target.path = $$INSTALL_DIR/bin
 res.files = logo
 res.path = $$INSTALL_DIR/
 
-h5app.files = h5
-h5app.path = $$INSTALL_DIR/bin
+#h5app.files = h5
+#h5app.path = $$INSTALL_DIR/bin
 
-INSTALLS += target res h5app
+INSTALLS += target res
 
 DISTFILES += \
     js/Helper.js \
@@ -48,7 +48,8 @@ DISTFILES += \
     qml/me/MeMain.qml \
     qml/notice/NoticeMain.qml \
     qml/me/Login.qml \
-    qml/MainClient.qml
+    qml/MainClient.qml \
+    qml/component/TitleBar.qml
 
 unix:!macx: LIBS += -L$$OUT_PWD/../sopstoreclinet/ -lsopstoreclinet
 

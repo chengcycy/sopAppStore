@@ -20,5 +20,27 @@
         <file>res/images/tab_me.png</file>
         <file>res/images/tab_contact.png</file>
         <file>res/images/tab_apps.png</file>
+        <file>res/images/add.png</file>
+        <file>res/images/arrow_left.png</file>
+        <file>res/images/arrow.png</file>
+        <file>res/images/close.png</file>
+        <file>res/images/del.png</file>
+        <file>res/images/info.png</file>
+        <file>res/images/mail.png</file>
+        <file>res/images/msg_w.png</file>
+        <file>res/images/msg.png</file>
+        <file>res/images/org.png</file>
+        <file>res/images/phnoe.png</file>
+        <file>res/images/qus.png</file>
+        <file>res/images/rect.png</file>
+        <file>res/images/search.png</file>
+        <file>res/images/sel_ok.png</file>
+        <file>res/images/sel.png</file>
+        <file>res/images/set.png</file>
+        <file>res/images/store_n.png</file>
+        <file>res/images/store.png</file>
+        <file>res/images/telphone.png</file>
+        <file>res/images/update.png</file>
+        <file>res/images/loading.gif</file>
     </qresource>
 </RCC>

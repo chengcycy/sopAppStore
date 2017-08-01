@@ -48,5 +48,6 @@
         <file>res/images/XXFB.png</file>
         <file>res/images/YJ.png</file>
         <file>res/images/ZZY.jpg</file>
+        <file>qml/component/TitleBar.qml</file>
     </qresource>
 </RCC>
