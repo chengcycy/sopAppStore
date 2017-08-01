@@ -16,6 +16,7 @@
 
 #include "cpackageinfo.h"
 #include "csystempackagemanager.h"
+#include "sopstoreclinet.h"
 
 using namespace SYBEROS;
 
@@ -50,6 +51,7 @@ public slots:
                                 CPackageInfo::PackageError error = CPackageInfo::NoError,
                                 int percent = -1);
 private:
+    QSharedPointer<SopStoreClinet> mpClient;
     QQuickView *m_view;
     QSharedPointer<CSystemPackageManager> mSysPkgMgr;
     bool       mNeedNoticeRefreshData;

@@ -49,7 +49,8 @@ DISTFILES += \
     qml/notice/NoticeMain.qml \
     qml/me/Login.qml \
     qml/MainClient.qml \
-    qml/component/TitleBar.qml
+    qml/component/TitleBar.qml \
+    qml/apps/SlidesshowIndicator.qml
 
 unix:!macx: LIBS += -L$$OUT_PWD/../sopstoreclinet/ -lsopstoreclinet
 

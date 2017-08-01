@@ -1,7 +1,5 @@
 import QtQuick 2.0
 import com.syberos.basewidgets 2.0
-import com.app.sopApp 1.0
-
 import "./me"
 CPageStackWindow {
 
@@ -14,8 +12,8 @@ CPageStackWindow {
         }
     }
 
-    SopAppClient{
-        id:appClient
+    Connections{
+        target: appClient
 
         onOpenApp:{
             var res = JSON.parse(param);
@@ -38,7 +36,7 @@ CPageStackWindow {
             mainApp.closeBrowser();
         }
         onCallback:{
-            console.log('=================json:'+json)
+//            console.log('=================json:'+json)
 
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
@@ -98,12 +96,14 @@ CPageStackWindow {
             gToast.requestToast('登录失败',"","");
         }else if(arr.length === 1){
             startPage.userInfo = JSON.stringify(arr[0]);
+            appClient.curUserInfo = startPage.userInfo;
             login();
         }else{
             var page = pageStack.push(Qt.resolvedUrl('./me/LoginUserSelectList.qml'));
             page.setModelData(data);
             page.callback.connect(function(data){
                 startPage.userInfo = data;
+                appClient.curUserInfo = startPage.userInfo;
                 login();
             });
         }

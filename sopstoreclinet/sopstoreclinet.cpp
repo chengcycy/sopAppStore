@@ -15,6 +15,19 @@ SopStoreClinet::~SopStoreClinet()
     //    loginout();
 }
 
+QString SopStoreClinet::curUserInfo() const
+{
+    return m_strCurUserInfo;
+}
+
+void SopStoreClinet::setCurUserInfo(const QString curUserInfo)
+{
+    if (m_strCurUserInfo != curUserInfo) {
+        m_strCurUserInfo = curUserInfo;
+        emit curUserInfoChanged();
+    }
+}
+
 void SopStoreClinet::writeData(QString content)
 {
     QFile file(APP_DATA_CACHE);
@@ -185,7 +198,7 @@ void SopStoreClinet::onLoginoutResult(QString json)
 void SopStoreClinet::onPreLoginResult(QString json)
 {
     jsonParce(json,"preLogin");
-//     emit loginoutUI();
+    //     emit loginoutUI();
 }
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)
@@ -341,7 +354,10 @@ void SopStoreClinet::callPhone(QString json)
 
 void SopStoreClinet::opensopApp(QString json)
 {
-    qDebug()<<Q_FUNC_INFO<<"json:"<<json;
+    if(json.contains("http")||json.contains("https")){
+        json = json.replace("http", "browser");
+        json = json.replace("https", "browser");
+    }
     emit openApp(json);
 }
 void SopStoreClinet::initDBusConnect()

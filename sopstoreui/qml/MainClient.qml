@@ -17,7 +17,9 @@ CPage {
             gScreenInfo.setStatusBar(mainClient.statusBarHoldEnabled)
             mainClient.statusBarHoldItemColor = "#edf0f0"
             gScreenInfo.setStatusBarStyle("black")
+            console.log('dddddddddddddddddddddddddddddddddddddddddddddd')
         } else if (status === CPageStatus.WillHide) {
+
         }
     }
 
@@ -48,11 +50,9 @@ CPage {
             }
 
             onCurrentIndexChanged: {
-                if(currentIndex == (tabView.count -1)){
-
-                }
                 if(currentIndex == 2){
-
+                    var EnOS = {enterID: 454, OrgID: '2920082168215965', type: 4}
+                    appClient.queryEnOS(JSON.stringify(EnOS))
                 }
             }
 

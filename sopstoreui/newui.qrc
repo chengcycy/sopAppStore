@@ -49,5 +49,8 @@
         <file>res/images/YJ.png</file>
         <file>res/images/ZZY.jpg</file>
         <file>qml/component/TitleBar.qml</file>
+        <file>qml/component/SlidesshowArea.qml</file>
+        <file>qml/component/SwipeTab.qml</file>
+        <file>qml/apps/SlidesshowIndicator.qml</file>
     </qresource>
 </RCC>
