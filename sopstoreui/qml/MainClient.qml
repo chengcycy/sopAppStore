@@ -17,7 +17,6 @@ CPage {
             gScreenInfo.setStatusBar(mainClient.statusBarHoldEnabled)
             mainClient.statusBarHoldItemColor = "#edf0f0"
             gScreenInfo.setStatusBarStyle("black")
-            console.log('dddddddddddddddddddddddddddddddddddddddddddddd')
         } else if (status === CPageStatus.WillHide) {
 
         }

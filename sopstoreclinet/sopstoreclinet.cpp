@@ -28,6 +28,17 @@ void SopStoreClinet::setCurUserInfo(const QString curUserInfo)
     }
 }
 
+QString SopStoreClinet::myApps() const
+{
+    return m_strApps;
+}
+
+void SopStoreClinet::setMyApps(const QString json)
+{
+    m_strApps = json;
+    emit myAppsChanged();
+}
+
 void SopStoreClinet::writeData(QString content)
 {
     QFile file(APP_DATA_CACHE);
@@ -77,7 +88,6 @@ void SopStoreClinet::slidesshow(QString json)
 
 void SopStoreClinet::queryAppStore(QString json)
 {
-    qDebug()<<Q_FUNC_INFO<<"param:"<<json;
     GET_DATA_PARAMS(queryAppStore,json);
 }
 
@@ -217,6 +227,7 @@ void SopStoreClinet::onQueryAppStoreResult(QString json,int type)
     QString fName;
     if(type == 1){
         fName = "appInfos";
+        setMyApps(json);
     }else if(type == 2){
         fName = "appStores";
     }else if(type == 3){

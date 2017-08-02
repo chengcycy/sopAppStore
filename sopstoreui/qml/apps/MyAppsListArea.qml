@@ -1,15 +1,32 @@
 import QtQuick 2.0
 import com.syberos.basewidgets 2.0
+import "../component"
 Item{
     id:myApps
     property  alias  myAppsModel:myAppsLst.model
+    property  string openAppUrl:''
 
-    function setAppsItemModel(index,data){
-        var item = myAppsLstModel.get(index);
+
+    function isSysApp(id){
+        var ids = [100000,100001,100002,100003,100004];
+        for(var i=0;i<ids.length;++i){
+            if(id===ids[i]){
+                return true;
+            }
+        }
+        return false;
     }
 
-    function delItemByClassName(classic){
-
+    Connections{
+        target: appClient
+        onCallback:{
+            var obj = JSON.parse(json)
+            if(obj.fName === 'getLoginAuthCode'){
+                var authCode = obj.data.authCode;
+                var app = { "scheme": openAppUrl+'&authcode='+ authCode};
+                appClient.opensopApp(JSON.stringify(app));
+            }
+        }
     }
 
     ListModel{
@@ -90,11 +107,11 @@ Item{
                     height: grid.cellHeight
                     color:'transparent'
 
-                    Image{
+                    RectHeadComponent{
                         id:appIco
 
-                        source: icon
-                        sourceSize: Qt.size(88,88)
+                        iconSource: icon
+                        //                        sourceSize: Qt.size(88,88)
 
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.top
@@ -105,7 +122,7 @@ Item{
                             onCanceled:appsDele.color = 'transparent'
                             onReleased:appsDele.color = 'transparent'
                             onPressAndHold: {
-                                if(sysApp === true){
+                                if(isSysApp(id)){
                                     gToast.requestToast("系统应用不能删除！","","");
                                     return;
                                 }
@@ -115,10 +132,22 @@ Item{
                                 if(rmIco.visible){
                                     rmIco.visible = false;
                                 }else{
-                                    var newUrl = type===1?activityName:homeUrl;
-                                    var app = { "scheme": newUrl }
-                                    appClient.opensopApp(JSON.stringify(app));
+                                    if(isSysApp(id)){
+                                        console.log('111111111111111111111111111111111111111111')
+                                        var newUrl = type===1?activityName:homeUrl;
+                                        var app = { "scheme": newUrl }
+                                        appClient.opensopApp(JSON.stringify(app));
+                                    }else{
+                                        //get app authcode
+                                        console.log('2222222222222222222222222222222222222')
 
+                                        newUrl = type===1?activityName:homeUrl;
+                                        newUrl = newUrl.replace("{{idCard}}",key);
+                                        myApps.openAppUrl = newUrl+'&appsecret='+secret;
+
+                                        var data = {appID: key + ""};
+                                        appClient.getLoginAuthCode(JSON.stringify(data));
+                                    }
                                     var userInfor = JSON.parse(appClient.curUserInfo);
                                     var statisticalData = JSON.stringify({ type: "8", appType: "2", appID: id + "", orgID: userInfor.orgID, unitID: userInfor.unitId, orgCode: userInfor.orgCode })
                                     appClient.queryAppStore(statisticalData);
@@ -141,6 +170,8 @@ Item{
                             anchors.fill: parent
                             onClicked: {
                                 appClient.queryAppStore(JSON.stringify({ type: "7", id:id}));
+                                appsMain.updateAllsApps(id,'appInstall',2);
+
                                 myAppsgridModel.remove(index,1);
                                 if(grid.count<=0){
                                     appDelegete.rmItem();

@@ -53,5 +53,9 @@
         <file>qml/component/SwipeTab.qml</file>
         <file>qml/apps/SlidesshowIndicator.qml</file>
         <file>qml/apps/MyAppsListArea.qml</file>
+        <file>qml/apps/AppsStore.qml</file>
+        <file>qml/apps/AppStoreTab.qml</file>
+        <file>qml/apps/AppStoreTabStyle.qml</file>
+        <file>qml/component/RectHeadComponent.qml</file>
     </qresource>
 </RCC>

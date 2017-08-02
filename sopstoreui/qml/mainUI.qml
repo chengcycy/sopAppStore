@@ -36,7 +36,7 @@ CPageStackWindow {
             mainApp.closeBrowser();
         }
         onCallback:{
-//            console.log('=================json:'+json)
+            //            console.log('=================json:'+json)
 
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
@@ -117,11 +117,28 @@ CPageStackWindow {
         appClient.login(JSON.stringify(data));
     }
 
+//    {
+//            "deptName": "平台运营部",
+//            "enname": "于帅",
+//            "isFirstLogin": "0",
+//            "orderNum": 99999,
+//            "orgCode": "1001100310021002",
+//            "orgID": "2920082167807315",
+//            "unitId": "1946",
+//            "unitName": "北京航天智造科技发展有限公司",
+//            "usbkeyidentification": "130628198703045032",
+//            "usbkeyname": "于帅",
+//            "userAccount": "3410306"
+//        }
+
     function showMainClientPage(data){
         var obj = JSON.parse(data);
         if(obj.data.code === 0){
             pageStack.clear();
             var page = pageStack.push(Qt.resolvedUrl('./MainClient.qml'));
+
+//            var enOS = { enterId: 545, orgId: "1946", type: 4 }
+//            appClient.queryEnOS(JSON.stringify(enOS));
         }else{
             gToast.requestToast('登录失败:'+obj.data.code,"","");
         }

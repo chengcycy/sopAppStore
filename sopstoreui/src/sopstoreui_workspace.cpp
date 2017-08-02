@@ -41,7 +41,7 @@ void sopstoreui_Workspace::openApp(QString url)
     qApp->openUrl(url);
 }
 
-void sopstoreui_Workspace::getSystemAppList()
+QString sopstoreui_Workspace::getSystemAppList()
 {
     QList<QSharedPointer<CPackageInfo> > list = mSysPkgMgr->packageInfoList();
     QJsonDocument doc;
@@ -54,7 +54,9 @@ void sopstoreui_Workspace::getSystemAppList()
     }
     doc.setObject(root);
     QString json = doc.toJson();
+
     emit systemApps(json);
+    return json;
 }
 
 void sopstoreui_Workspace::closeBrowser()

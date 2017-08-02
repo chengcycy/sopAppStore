@@ -3,13 +3,33 @@ import com.syberos.basewidgets 2.0
 import "../component"
 
 Rectangle{
-    color:"#f7f3f7"
+    id:appsMain
 
+    color:"#f7f3f7"
     TitleBar{
         id:tBar
         tips: qsTr("应用")
         ico:"qrc:/res/images/store_n.png"
         anchors.top: parent.top
+        onClicked: {
+            if(pos === 0){
+                var page = pageStack.push(Qt.resolvedUrl("./AppsStore.qml"));
+                page.appSwipeTabviewModel = appSwipeTabviewModel;
+            }
+        }
+    }
+    /////////////////AppsStore/////////////////////
+    ListModel{
+        id:appSwipeTabviewModel
+    }
+    function updateAllsApps(appId,propertyName,value){
+        for(var i=0;i<appSwipeTabviewModel.count;++i){
+            console.log('===============================:'+appSwipeTabviewModel.get(i).id+',appId:'+appId)
+            if(appSwipeTabviewModel.get(i).id ===appId){
+                appSwipeTabviewModel.setProperty(i,propertyName,value);
+                break;
+            }
+        }
     }
 
     /////////////////轮播图/////////////////////
@@ -35,7 +55,55 @@ Rectangle{
 
     Component.onCompleted: {
         slidesshow();
-        getMyAppList();
+    }
+
+    /*
+    1.　已安装
+    2.　未安装
+    3.　需更新
+    4.　正在安装
+    */
+    function appInstallStatus(app){
+
+        var sysApps = JSON.parse(mainApp.getSystemAppList());
+        var myApps = (JSON.parse(appClient.myApps)).appInfos;
+        var findApped = false;
+        for(var i=0;i<myApps.length;++i){
+            if(myApps[i].appClassify.classifyID === app.classify){
+                var items = myApps[i].appInfoList;
+                for(var j=0;j<items.length;++j){
+                    //                        console.log('id:'+app.id+',id2:'+items[j].id)
+                    if(items[j].id === app.id){
+                        findApped = true;
+                        break;
+                    }
+                }
+                if(findApped){
+                    break;
+                }
+            }
+        }
+        if(!findApped){
+            return 2;
+        }else if(app.type === 1){//sop
+            var sopId = app.packageName.split('-')[0];
+            console.log('hhhhhhhhhhhhhhhh:'+sopId+',hasPro:'+sysApps.hasOwnProperty(sopId))
+            if(sysApps.hasOwnProperty(sopId)){
+                console.log('ver11:'+sysApps.valueOf(sopId)+',app:'+app.version);
+                var newVersion = app.version.replace('V','');
+                newVersion = app.version.replace('v','');
+                if(sysApps.valueOf(sopId).ver < newVersion){
+                    return 3;
+                }else
+                {
+                    return 1;
+                }
+            }else{
+                return 2;
+            }
+        }else{
+            return 1;
+        }
     }
 
     function slidesshow(){
@@ -54,10 +122,7 @@ Rectangle{
         for(var i=0;i<obj.data.length;++i){
             slides.addPage(JSON.stringify(obj.data[i]));
         }
-        tBar.showLoad = false;
-        tBar.showRightIco = true;
-        slides.visible = true;
-        slides.startTimer();
+        getMyAppList();
     }
     function handleMyApps(obj){
         myApps.myAppsModel.clear();
@@ -74,7 +139,7 @@ Rectangle{
                 arr = initChatApps(item.appInfoList);
                 hasChatApp = true;
             }else {
-                 arr = item.appInfoList;
+                arr = item.appInfoList;
             }
             item.appInfos = JSON.stringify(arr);
             myApps.myAppsModel.append(item);
@@ -91,6 +156,8 @@ Rectangle{
             var pos = hasWorkApp?1:0;
             myApps.myAppsModel.insert(pos,classic);
         }
+
+        appClient.queryAppStore(JSON.stringify({ type: "2" }));
     }
 
     Connections{
@@ -101,6 +168,32 @@ Rectangle{
                 handleSlidesshow(obj);
             }else if(obj.fName === 'appInfos'){
                 handleMyApps(obj.data.appInfos);
+            }else if(obj.fName === 'appStores'){
+                handleGetAllApss(obj);
+
+            }else if(obj.fName === 'delApp'){
+
+            }
+        }
+    }
+    function handleGetAllApss(obj){
+
+        if(tBar.showLoad){
+            tBar.showLoad = false;
+            tBar.showRightIco = true;
+            slides.visible = true;
+            slides.startTimer();
+
+            var apps = obj.data.appStore.appInfoList;
+            if(apps.length>0){
+                appSwipeTabviewModel.clear();
+            }
+
+            for(var j=0;j<apps.length;++j){
+                var item = apps[j];
+                var status = appInstallStatus(apps[j]);
+                item.appInstall = status;
+                appSwipeTabviewModel.append(item);
             }
         }
     }
@@ -108,7 +201,7 @@ Rectangle{
     function initChatApps(arr){
         var apps=[];
         var userInfor = JSON.parse(appClient.curUserInfo);
-        var tgyy = { id: 100002, type: 1, name: "天工圆圆", icon: 'qrc:/res/images/TGYY.png', activityName: 'linkdood:showlinkdood?pid='+userInfor.usbkeyidentification, sysApp: true };
+        var tgyy = { id: 100002, type: 1, name: "天工圆圆", icon: 'qrc:/res/images/TGYY.png', activityName: 'linkdood:showlinkdood?id='+userInfor.usbkeyidentification};
         apps[0] = tgyy;
 
         for(var i = 0;(arr!==null) && i<arr.length;++i){
@@ -121,12 +214,12 @@ Rectangle{
         var apps=[];
         var userInfor = JSON.parse(appClient.curUserInfo);
 
-        var gwgl = { id: 100001, type: 1, name: "公文管理", icon: 'qrc:/res/images/GWGL.png', activityName: 'casicoa:showOA?pid='+userInfor.usbkeyidentification+'&sessionID=54545333', sysApp: true };
-        var sfml = { id: 100004, type: 2, name: "安全邮件", icon: 'qrc:/res/images/YJ.png', homeUrl: 'http://10.152.36.31/secmail/loginapp.do?type=cid&PID='+userInfor.usbkeyidentification, sysApp: true };
-        var xifb = { id: 100003, type: 2, name: "信息发布", icon: 'qrc:/res/images/XXFB.png', homeUrl: 'http://info.casic.cs/jeecms2/index/mobile/', sysApp: true };
+        var gwgl = { id: 100001, type: 1, name: "公文管理", icon: 'qrc:/res/images/GWGL.png', activityName: 'casicoa:showOA?pid='+userInfor.usbkeyidentification+'&sessionID=54545333' };
+        var sfml = { id: 100004, type: 2, name: "安全邮件", icon: 'qrc:/res/images/YJ.png', homeUrl: 'http://10.152.36.31/secmail/loginapp.do?type=cid&PID='+userInfor.usbkeyidentification};
+        var xifb = { id: 100003, type: 2, name: "信息发布", icon: 'qrc:/res/images/XXFB.png', homeUrl: 'http://info.casic.cs/jeecms2/index/mobile/'};
 
-        var url = 'http://10.152.36.26:8080/portal/menu.jsp?userName='+userInfor.usbkeyname+'&PID='+userInfor.usbkeyidentification+'&webService=&SessionID=';
-        var xtbg = { id: 100000, type: 2, name: "协同办公", icon: 'qrc:/res/images/TGYY.png', homeUrl: url, sysApp: true };
+        var url = 'http://10.152.36.26:8080/portal/menu.jsp?userName='+userInfor.usbkeyname+'&PID='+userInfor.usbkeyidentification;//+'&webService=&SessionID='
+        var xtbg = { id: 100000, type: 2, name: "协同办公", icon: 'qrc:/res/images/TGYY.png', homeUrl: url };
 
         if(userInfor.unitId === '1'){
             apps[apps.length] = xtbg;

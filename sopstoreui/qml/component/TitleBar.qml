@@ -8,6 +8,7 @@ Rectangle{
     property alias ico : icoImg.source
     property bool  showRightIco: true
     property bool  showLoad: false
+    property bool  showLeftIco: false
     signal clicked(int pos)
 
     color:"#f7f7f7"
@@ -49,6 +50,7 @@ Rectangle{
         id:icoImgLeft
 
         sourceSize: Qt.size(40,40)
+        visible: showLeftIco
         source: "qrc:/res/images/arrow_left.png"
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
