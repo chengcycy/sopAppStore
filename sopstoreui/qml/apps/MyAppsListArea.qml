@@ -132,14 +132,22 @@ Item{
                                 if(rmIco.visible){
                                     rmIco.visible = false;
                                 }else{
+
+                                    if(type === 1){
+                                        var sysApps = JSON.parse(mainApp.getSystemAppList());
+                                        var sopId = (id === 100002)?'com.vrv.linkDood':packageName.split('-')[0];
+                                        if(!sysApps.hasOwnProperty(sopId)){
+                                            gToast.requestToast('系统未安装"'+name+'"应用，请在应用商店安装后再使用！',"","");
+                                            return;
+                                        }
+                                    }
+
                                     if(isSysApp(id)){
                                         console.log('111111111111111111111111111111111111111111')
                                         var newUrl = type===1?activityName:homeUrl;
                                         var app = { "scheme": newUrl }
                                         appClient.opensopApp(JSON.stringify(app));
                                     }else{
-                                        //get app authcode
-                                        console.log('2222222222222222222222222222222222222')
 
                                         newUrl = type===1?activityName:homeUrl;
                                         newUrl = newUrl.replace("{{idCard}}",key);

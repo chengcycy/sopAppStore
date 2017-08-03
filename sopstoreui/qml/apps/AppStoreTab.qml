@@ -40,6 +40,8 @@ CSwipeTab {
                     return '安装';
                 }else if(appInstall === 3){
                     return '更新';
+                }else{
+                    return progress+'%';
                 }
             }
 
@@ -79,7 +81,7 @@ CSwipeTab {
                 font.pixelSize: 28
                 color: '#7b7b7b'
 
-                text:version
+                text:'版本号:'+version
                 anchors.left: appico.right
                 anchors.leftMargin: 10
                 anchors.bottom: appico.bottom
@@ -118,6 +120,17 @@ CSwipeTab {
                             if(type === 2){//h5
                                 listModel.setProperty(index,'appInstall',1);
                                 appClient.queryAppStore(JSON.stringify({ type: "6", id:id,classify:classify}));
+                            }else{
+                                var caches = appClient.downloadingApps;
+                                if(caches !==""){
+                                    caches = JSON.parse(caches);
+                                    gToast.requestToast('"'+caches.name+'"应用正在下载,请稍后',"","");
+                                }else{
+                                    appClient.downloadingApps = JSON.stringify({name:name,id:id,packageName:packageName,classify:classify});
+                                    listModel.setProperty(index,'appInstall',4);
+                                    appClient.downloadApp(packageName,downloadUrl);
+                                }
+
                             }
                         }
                     }

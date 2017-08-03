@@ -5,6 +5,8 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
     QObject(parent)
 {
 
+    m_strApps = "";
+    m_strDownloadingApps = "";
     initDBusConnect();
     connect(&mNetworkMgr,SIGNAL(networkStatusChanged(bool,CNetworkManager::NetworkType)),this,SLOT(onNetworkStatusChanged(bool,CNetworkManager::NetworkType)));
 }
@@ -37,6 +39,17 @@ void SopStoreClinet::setMyApps(const QString json)
 {
     m_strApps = json;
     emit myAppsChanged();
+}
+
+QString SopStoreClinet::downloadingApps() const
+{
+    return m_strDownloadingApps;
+}
+
+void SopStoreClinet::setDownloadingApps(const QString json)
+{
+    m_strDownloadingApps = json;
+    emit downloadingAppsChanged();
 }
 
 void SopStoreClinet::writeData(QString content)

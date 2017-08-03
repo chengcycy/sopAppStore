@@ -28,6 +28,7 @@ class  SopStoreClinet : public QObject
     Q_OBJECT
     Q_PROPERTY(QString curUserInfo READ curUserInfo WRITE setCurUserInfo NOTIFY curUserInfoChanged)
     Q_PROPERTY(QString myApps READ myApps WRITE setMyApps NOTIFY myAppsChanged)
+    Q_PROPERTY(QString downloadingApps READ downloadingApps WRITE setDownloadingApps NOTIFY downloadingAppsChanged)
 public:
     explicit SopStoreClinet(QObject *parent = 0);
     ~SopStoreClinet();
@@ -37,6 +38,9 @@ public:
 
     QString myApps() const;
     void setMyApps(const QString json);
+
+    QString downloadingApps() const;
+    void setDownloadingApps(const QString json);
 
     //Q_INVOKABLE bool isInstallApp(QString userId,QString appId);
 
@@ -85,6 +89,7 @@ signals:
     void loginoutUI();
     void curUserInfoChanged();
     void myAppsChanged();
+    void downloadingAppsChanged();
 public slots:
     void onLoginAuthCodeResult(QString authCode);
     void onGetSystemApps(QString json);
@@ -119,6 +124,7 @@ private:
     void jsonParce(QString json,QString fName);
     QString m_strCurUserInfo;
     QString m_strApps;//缓存我的apps
+    QString m_strDownloadingApps;//记录正在下载app
 };
 
 #endif // SOPSTORECLINET_H

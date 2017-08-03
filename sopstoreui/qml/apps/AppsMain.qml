@@ -5,6 +5,8 @@ import "../component"
 Rectangle{
     id:appsMain
 
+    property string classicJson
+
     color:"#f7f3f7"
     TitleBar{
         id:tBar
@@ -15,6 +17,8 @@ Rectangle{
             if(pos === 0){
                 var page = pageStack.push(Qt.resolvedUrl("./AppsStore.qml"));
                 page.appSwipeTabviewModel = appSwipeTabviewModel;
+                page.classicJson = classicJson;
+                tBar.showRedPoint = false;
             }
         }
     }
@@ -93,6 +97,7 @@ Rectangle{
                 var newVersion = app.version.replace('V','');
                 newVersion = app.version.replace('v','');
                 if(sysApps.valueOf(sopId).ver < newVersion){
+                    tBar.showRedPoint = true;
                     return 3;
                 }else
                 {
@@ -119,6 +124,7 @@ Rectangle{
     }
     ///////////////////////////////////////////////////////////
     function handleSlidesshow(obj){
+        slides.tabModel.clear();
         for(var i=0;i<obj.data.length;++i){
             slides.addPage(JSON.stringify(obj.data[i]));
         }
@@ -171,16 +177,34 @@ Rectangle{
             }else if(obj.fName === 'appStores'){
                 handleGetAllApss(obj);
 
-            }else if(obj.fName === 'delApp'){
-
+            }if(obj.fName === 'classifyBeans'){
+                appsMain.classicJson = json;
+                tBar.showLoad = false;
+                tBar.showRightIco = true;
+            }else if(obj.fName === 'addApp'){
+                appClient.queryAppStore(JSON.stringify({type: "1"}));
+            }else if(obj.fName === 'progress'){
+                var app = JSON.parse(appClient.downloadingApps);
+                appsMain.updateAllsApps(app.id,'progress',obj.data.progress+'');
+            }else if(obj.fName === 'downloadApp'){
+                var curApp = JSON.parse(appClient.downloadingApps);
+                if(obj.data.code){
+                    appClient.installSopApp(curApp.packageName);
+                    appsMain.updateAllsApps(curApp.id,'progress','');
+                    appsMain.updateAllsApps(curApp.id,'appInstall',1);
+                    appClient.queryAppStore(JSON.stringify({ type: "6", id:curApp.id,classify:curApp.classify}));
+                }else{
+                    appsMain.updateAllsApps(curApp.id,'progress','');
+                    appsMain.updateAllsApps(curApp.id,'appInstall',2);
+                    gToast.requestToast('安装包下载失败，请重新安装！',"","");
+                }
+                appClient.downloadingApps = '';
             }
         }
     }
     function handleGetAllApss(obj){
 
         if(tBar.showLoad){
-            tBar.showLoad = false;
-            tBar.showRightIco = true;
             slides.visible = true;
             slides.startTimer();
 
@@ -193,8 +217,11 @@ Rectangle{
                 var item = apps[j];
                 var status = appInstallStatus(apps[j]);
                 item.appInstall = status;
+                item.progress = "";
                 appSwipeTabviewModel.append(item);
             }
+            //classic
+            appClient.queryAppStore(JSON.stringify({ type: "4" }));
         }
     }
 
@@ -213,6 +240,7 @@ Rectangle{
     function initOfficeApps(arr){
         var apps=[];
         var userInfor = JSON.parse(appClient.curUserInfo);
+        console.log('dddddddddddddddddddddddd:'+appClient.curUserInfo)
 
         var gwgl = { id: 100001, type: 1, name: "公文管理", icon: 'qrc:/res/images/GWGL.png', activityName: 'casicoa:showOA?pid='+userInfor.usbkeyidentification+'&sessionID=54545333' };
         var sfml = { id: 100004, type: 2, name: "安全邮件", icon: 'qrc:/res/images/YJ.png', homeUrl: 'http://10.152.36.31/secmail/loginapp.do?type=cid&PID='+userInfor.usbkeyidentification};

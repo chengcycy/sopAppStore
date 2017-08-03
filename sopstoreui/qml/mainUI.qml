@@ -32,20 +32,6 @@ CPageStackWindow {
         onGetSystemApps:{
             mainApp.getSystemAppList();
         }
-        onLoginoutUI:{
-            mainApp.closeBrowser();
-        }
-        onCallback:{
-            //            console.log('=================json:'+json)
-
-            var obj = JSON.parse(json);
-            if(obj.fName === 'preLogin'){
-                showUserLstPage(JSON.stringify(obj.data));
-            }else if(obj.fName === 'login'){
-                showMainClientPage(json);
-            }
-            loadingPage.hide();
-        }
     }
     Connections{
         target: mainApp
@@ -58,12 +44,7 @@ CPageStackWindow {
         }
     }
 
-    initialPage:Login{
-        id: startPage
-
-        property string passwd: ''
-        property string userInfo:''
-
+    initialPage:CPage{
         anchors.fill: parent
         color: "#F7F7FA"
         orientationLock: CPageOrientation.LockPortrait
@@ -76,71 +57,8 @@ CPageStackWindow {
 
             }
         }
-        onLoginClicked:{
-            var json = {"userName":userName}
-            startPage.passwd = passwd;
-            loadingPage.toolTip = qsTr("正在请求登录")
-            loadingPage.show();
-            appClient.preLogin(JSON.stringify(json));
-        }
     }
-    CIndicatorDialog {
-        id:loadingPage
-        property string toolTip: ""
-        messageText: os.i18n.ctr(toolTip)
-    }
-    /////////////////////////////////////////////////////////////////
-    function showUserLstPage(data){
-        var arr = JSON.parse(data);
-        if(arr.length === 0){
-            gToast.requestToast('登录失败',"","");
-        }else if(arr.length === 1){
-            startPage.userInfo = JSON.stringify(arr[0]);
-            appClient.curUserInfo = startPage.userInfo;
-            login();
-        }else{
-            var page = pageStack.push(Qt.resolvedUrl('./me/LoginUserSelectList.qml'));
-            page.setModelData(data);
-            page.callback.connect(function(data){
-                startPage.userInfo = data;
-                appClient.curUserInfo = startPage.userInfo;
-                login();
-            });
-        }
-    }
-    function login(){
-        var obj = JSON.parse(startPage.userInfo);
-        var data = {usbkeyidentification:obj.usbkeyidentification,password:startPage.passwd}
-
-        loadingPage.toolTip = qsTr("正在登录．．．")
-        loadingPage.show();
-        appClient.login(JSON.stringify(data));
-    }
-
-//    {
-//            "deptName": "平台运营部",
-//            "enname": "于帅",
-//            "isFirstLogin": "0",
-//            "orderNum": 99999,
-//            "orgCode": "1001100310021002",
-//            "orgID": "2920082167807315",
-//            "unitId": "1946",
-//            "unitName": "北京航天智造科技发展有限公司",
-//            "usbkeyidentification": "130628198703045032",
-//            "usbkeyname": "于帅",
-//            "userAccount": "3410306"
-//        }
-
-    function showMainClientPage(data){
-        var obj = JSON.parse(data);
-        if(obj.data.code === 0){
-            pageStack.clear();
-            var page = pageStack.push(Qt.resolvedUrl('./MainClient.qml'));
-
-//            var enOS = { enterId: 545, orgId: "1946", type: 4 }
-//            appClient.queryEnOS(JSON.stringify(enOS));
-        }else{
-            gToast.requestToast('登录失败:'+obj.data.code,"","");
-        }
+    Component.onCompleted: {
+        pageStack.replace(Qt.resolvedUrl('./me/Login.qml'));
     }
 }

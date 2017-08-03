@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import com.syberos.basewidgets 2.0
 import "../component"
 
@@ -6,6 +6,9 @@ CPage {
     id: appsStore
 
     property var  appSwipeTabviewModel
+    property string classicJson;
+    property bool  isLoading:true
+
 
     onStatusChanged: {
         if (status === CPageStatus.WillShow) {
@@ -15,8 +18,19 @@ CPage {
             gScreenInfo.setStatusBar(appsStore.statusBarHoldEnabled)
             appsStore.statusBarHoldItemColor = "#edf0f0"
             gScreenInfo.setStatusBarStyle("black")
-        } else if (status === CPageStatus.WillHide) {
-
+        } else if (status === CPageStatus.Show) {
+            isLoading = true;
+            if(classicJson !== ""){
+                var obj = JSON.parse(classicJson)
+                if(obj.fName === 'classifyBeans'){
+                    var cls = obj.data.classifyBeans;
+                    for(var i=0;i<cls.length;++i){
+                        console.log('add page==========================')
+                        appSwipeTabview.addPage(cls[i],appSwipeTabviewModel);
+                    }
+                }
+            }
+            isLoading = false;
         }
     }
     contentAreaItem:Rectangle{
@@ -31,14 +45,25 @@ CPage {
             showLeftIco:true
             anchors.top: parent.top
             onClicked: {
+//                pageStack.deleteCachedPage(appsStore);
                 pageStack.pop();
+
             }
+        }
+
+        AnimatedImage{
+            id:load
+            source: "qrc:/res/images/ring.gif"
+            visible: isLoading
+            playing: visible
+            anchors.centerIn: parent
         }
 
         CSwipeTabView{
             id:appSwipeTabview
 
             tabVisible: true
+            visible: !isLoading
             width: parent.width
             tabBar: AppStoreTabStyle{
                 tabView: appSwipeTabview
@@ -59,25 +84,6 @@ CPage {
                     obj.title = jsonObj.classifyName;
                     obj.classId = jsonObj.classifyID;
                     obj.listModel = model;
-                }
-            }
-        }
-        Component.onCompleted: {
-            appClient.queryAppStore(JSON.stringify({ type: "4" }));
-        }
-
-        Connections{
-            target: appClient
-            onCallback:{
-                var obj = JSON.parse(json)
-                if(obj.fName === 'classifyBeans'){
-                    var cls = obj.data.classifyBeans;
-                    for(var i=0;i<cls.length;++i){
-                        console.log('add page==========================')
-                        appSwipeTabview.addPage(cls[i],appSwipeTabviewModel);
-                    }
-                }else if(obj.fName === 'addApp'){
-                    appClient.queryAppStore(JSON.stringify({type: "1"}));
                 }
             }
         }

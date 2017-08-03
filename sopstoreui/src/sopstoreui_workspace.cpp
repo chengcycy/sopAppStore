@@ -62,19 +62,19 @@ QString sopstoreui_Workspace::getSystemAppList()
 void sopstoreui_Workspace::closeBrowser()
 {
     qDebug()<<Q_FUNC_INFO<<"==================closeBrowser===========================";
-//    if(mNeedNoticeRefreshData){
-//        mNeedNoticeRefreshData = false;
-//        return;
-//    }
-//     CProcessManager proMgr;
-//     QList<int> pids = proMgr.processList();
+    //    if(mNeedNoticeRefreshData){
+    //        mNeedNoticeRefreshData = false;
+    //        return;
+    //    }
+    //     CProcessManager proMgr;
+    //     QList<int> pids = proMgr.processList();
 
-//     for(auto i : pids){
-//         qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
-//         if(proMgr.sopidByPid(i) == "com.syberos.browser"){
-//             proMgr.killProcessByPid(i);
-//         }
-//     }
+    //     for(auto i : pids){
+    //         qDebug()<<Q_FUNC_INFO<<"kill id:"<<i<<",sodId:"<<proMgr.sopidByPid(i);
+    //         if(proMgr.sopidByPid(i) == "com.syberos.browser"){
+    //             proMgr.killProcessByPid(i);
+    //         }
+    //     }
 }
 
 QUrl sopstoreui_Workspace::appUrl()
@@ -114,7 +114,7 @@ sopstoreui_Workspace::~sopstoreui_Workspace()
     qDebug()<<Q_FUNC_INFO;
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     config.setValue("clientStatus",0);
-//    closeBrowser();
+    //    closeBrowser();
 }
 
 void sopstoreui_Workspace::onActive()
@@ -156,6 +156,6 @@ void sopstoreui_Workspace::onLaunchComplete(Option option, const QStringList& pa
 void sopstoreui_Workspace::onInstallStatusChanged(const QString &sopid, const QString &pkgPath, CPackageInfo::PackageStatus status, CPackageInfo::PackageError error, int percent)
 {
     qDebug()<<Q_FUNC_INFO;
-    getSystemAppList();
+    //    getSystemAppList();
 }
 

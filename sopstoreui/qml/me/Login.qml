@@ -3,7 +3,8 @@ import com.syberos.basewidgets 2.0
 CPage {
     id: loginPage
 
-    signal loginClicked(string userName,string passwd)
+    property string passwd: ''
+    property string userInfo:''
 
     statusBarHoldEnabled: false
     onStatusChanged: {
@@ -103,7 +104,7 @@ CPage {
                 }
 
                 onTextChanged: {
-//                    passWordEdit.text = ""
+                    //                    passWordEdit.text = ""
 
                     if(loginPage.state !== "hidden") {
                         loginPage.state = "hidden"
@@ -205,14 +206,20 @@ CPage {
 
                 backgroundComponent: Rectangle {
                     anchors.fill: parent
-                    color:"#0c2559"
+                    color:"#313563"
                     radius: 16
                     border.width: 3
-                    border.color: "#002a41"
+                    border.color: "#313563"
                 }
 
                 onClicked: filckableInput.login()
             }
+            CIndicatorDialog {
+                id:loadingPage
+                property string toolTip: ""
+                messageText: os.i18n.ctr(toolTip)
+            }
+
             function login() {
                 if(srvLineEdit.text ===""){
                     gToast.requestToast("用户名不能为空","","");
@@ -226,9 +233,62 @@ CPage {
                     passWordEdit.focus = true
                     gToast.requestToast("密码不能为空","","");
                 } else {
-                    emit: loginClicked(srvLineEdit.text,passWordEdit.text);
+                    var json = {"userName":srvLineEdit.text}
+                    loginPage.passwd = passWordEdit.text;
+                    loadingPage.toolTip = qsTr("正在请求登录")
+                    loadingPage.show();
+                    appClient.preLogin(JSON.stringify(json));
                 }
             }
+        }
+    }
+    /////////////////////////////////////////////////////////////////
+
+    Connections{
+        target: appClient
+        onCallback:{
+            var obj = JSON.parse(json);
+            if(obj.fName === 'preLogin'){
+                showUserLstPage(JSON.stringify(obj.data));
+            }else if(obj.fName === 'login'){
+                showMainClientPage(json);
+            }
+            loadingPage.hide();
+        }
+    }
+    function showUserLstPage(data){
+        var arr = JSON.parse(data);
+        if(arr.length === 0){
+            gToast.requestToast('登录失败',"","");
+        }else if(arr.length === 1){
+            loginPage.userInfo = JSON.stringify(arr[0]);
+            appClient.curUserInfo = loginPage.userInfo;
+            login();
+        }else{
+            var page = pageStack.push(Qt.resolvedUrl('./LoginUserSelectList.qml'));
+            page.setModelData(data);
+            page.callback.connect(function(data){
+                loginPage.userInfo = data;
+                appClient.curUserInfo = loginPage.userInfo;
+                login();
+            });
+        }
+    }
+    function login(){
+        var obj = JSON.parse(loginPage.userInfo);
+        var data = {usbkeyidentification:obj.usbkeyidentification,password:loginPage.passwd}
+
+        loadingPage.toolTip = qsTr("正在登录．．．")
+        loadingPage.show();
+        appClient.login(JSON.stringify(data));
+    }
+    function showMainClientPage(data){
+        var obj = JSON.parse(data);
+        if(obj.data.code === 0){
+            pageStack.clear();
+            var page = pageStack.push(Qt.resolvedUrl('../MainClient.qml'));
+        }else{
+            gToast.requestToast('登录失败:'+obj.data.code,"","");
         }
     }
 }

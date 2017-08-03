@@ -9,6 +9,7 @@ Rectangle{
     property bool  showRightIco: true
     property bool  showLoad: false
     property bool  showLeftIco: false
+    property bool  showRedPoint: false
     signal clicked(int pos)
 
     color:"#f7f7f7"
@@ -37,6 +38,21 @@ Rectangle{
             }
         }
     }
+    Rectangle{
+        id:redPoint
+
+        color: 'red'
+        height: 20
+        width: height
+        radius: height/2
+        visible: showRedPoint;
+
+        anchors.right: icoImg.right
+        anchors.rightMargin: -10
+        anchors.top: icoImg.top
+        anchors.topMargin: -8
+    }
+
     AnimatedImage{
         id:load
         visible: showLoad
