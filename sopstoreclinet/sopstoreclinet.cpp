@@ -1,6 +1,6 @@
 #include "sopstoreclinet.h"
 #include <QFileInfo>
-
+#include <QtMath>
 SopStoreClinet::SopStoreClinet(QObject *parent) :
     QObject(parent)
 {
@@ -420,4 +420,35 @@ void SopStoreClinet::jsonParce(QString json,QString fName)
         emit callback(docTmp.toJson());
     }
 }
-
+QString SopStoreClinet::dealTime(qint64 msgtime)
+{
+    QString strDateTime("");
+    QDateTime msgDateTime;
+    int distance = 0;
+    if (!msgtime)
+    {
+        return strDateTime;
+    }
+    msgDateTime.setMSecsSinceEpoch(msgtime);
+    distance = msgDateTime.daysTo(QDateTime::currentDateTime());
+    //今天
+    if (qFabs(distance) <= 0)
+    {
+        strDateTime = msgDateTime.toString("HH:mm");
+    }
+    //昨天
+    else if (qFabs(distance) <= 1)
+    {
+       strDateTime = "昨天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
+    }
+    //前天
+    else if (qFabs(distance) <= 2)
+    {
+        strDateTime = "前天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
+    }
+    else
+    {
+       strDateTime = msgDateTime.toString("MM月dd日") +QString::fromLocal8Bit(" ")+msgDateTime.toString("HH:mm");
+    }
+    return strDateTime;
+}

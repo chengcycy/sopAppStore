@@ -49,10 +49,12 @@ CPage {
             }
 
             onCurrentIndexChanged: {
-                if(currentIndex == 2){
-                    var EnOS = {enterID: 454, OrgID: '2920082168215965', type: 4}
-                    appClient.queryEnOS(JSON.stringify(EnOS))
-                }
+//                if(currentIndex == 2){
+//                    var obj = JSON.parse(appClient.curUserInfo);
+//                    console.log('2222222222222222222222:'+obj.unitId);
+//                    var EnOS = {enterID: 602, OrgID:obj.unitId+'', type: 4}
+//                    appClient.queryEnOS(JSON.stringify(EnOS))
+//                }
             }
 
             CTab {

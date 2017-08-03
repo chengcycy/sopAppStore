@@ -57,5 +57,7 @@
         <file>qml/apps/AppStoreTab.qml</file>
         <file>qml/apps/AppStoreTabStyle.qml</file>
         <file>qml/component/RectHeadComponent.qml</file>
+        <file>qml/Helper.js</file>
+        <file>qml/notice/SlideDelegate.qml</file>
     </qresource>
 </RCC>

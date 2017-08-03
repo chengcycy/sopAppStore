@@ -3,7 +3,7 @@ import com.syberos.basewidgets 2.0
 import "./me"
 CPageStackWindow {
 
-    keyHandle: false
+//    keyHandle: false
     onBackKey: {
         if(pageStack.depth>1){
             pageStack.pop();
@@ -35,10 +35,6 @@ CPageStackWindow {
     }
     Connections{
         target: mainApp
-        onRefreshData:{
-            var json = {"refreshData":true};
-            appClient.onRefreshData(JSON.stringify(json));
-        }
         onSystemApps:{
             appClient.onGetSystemApps(json);
         }

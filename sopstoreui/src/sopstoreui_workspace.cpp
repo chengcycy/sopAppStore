@@ -121,7 +121,7 @@ void sopstoreui_Workspace::onActive()
 {
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     config.setValue("clientStatus",1);
-    emit refreshData();
+//    emit refreshData();
 }
 
 void sopstoreui_Workspace::onDeactive()

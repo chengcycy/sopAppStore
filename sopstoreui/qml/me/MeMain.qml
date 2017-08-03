@@ -4,11 +4,12 @@ import "../component"
 Rectangle{
     id:meMain
 
-    color:"#efeef4"
+    color:"#f7f3f7"
     TitleBar {
         id: titleBar
-        tips: qsTr("通讯录")
+        tips: qsTr("我")
         ico:"qrc:/res/images/search.png"
+        showRightIco: false
         anchors.top: parent.top
     }
 

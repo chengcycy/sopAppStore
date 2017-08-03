@@ -121,6 +121,16 @@ CSwipeTab {
                                 listModel.setProperty(index,'appInstall',1);
                                 appClient.queryAppStore(JSON.stringify({ type: "6", id:id,classify:classify}));
                             }else{
+                                if(appInstall === 2){
+                                    var sysApps = JSON.parse(mainApp.getSystemAppList());
+                                    var sopId = packageName.split('-')[0];
+                                    if(sysApps.hasOwnProperty(sopId)){
+                                        listModel.setProperty(index,'appInstall',1);
+                                        appClient.queryAppStore(JSON.stringify({ type: "6", id:id,classify:classify}));
+                                        return;
+                                    }
+                                }
+
                                 var caches = appClient.downloadingApps;
                                 if(caches !==""){
                                     caches = JSON.parse(caches);

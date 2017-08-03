@@ -99,7 +99,7 @@ Item{
                 cellWidth: grid.width/4
                 cellHeight: cellWidth -10
                 clip: true
-
+                interactive: false
                 delegate: Rectangle{
                     id:appsDele
 
@@ -135,10 +135,12 @@ Item{
 
                                     if(type === 1){
                                         var sysApps = JSON.parse(mainApp.getSystemAppList());
-                                        var sopId = (id === 100002)?'com.vrv.linkDood':packageName.split('-')[0];
-                                        if(!sysApps.hasOwnProperty(sopId)){
-                                            gToast.requestToast('系统未安装"'+name+'"应用，请在应用商店安装后再使用！',"","");
-                                            return;
+                                        if(id !== 100001){
+                                            var sopId = (id === 100002)?'com.vrv.linkDood':packageName.split('-')[0];
+                                            if(!sysApps.hasOwnProperty(sopId)){
+                                                gToast.requestToast('系统未安装"'+name+'"应用，请在应用商店安装后再使用！',"","");
+                                                return;
+                                            }
                                         }
                                     }
 

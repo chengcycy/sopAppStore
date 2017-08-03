@@ -3,7 +3,7 @@ import com.syberos.basewidgets 2.0
 import "../component"
 
 Rectangle {
-    color: "#efeef4"
+    color: "#f7f3f7"
 
     TitleBar {
         id: titleBar

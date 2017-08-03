@@ -116,7 +116,7 @@ CPage {
                             z:parent.z-1
                         }
                         onReleased:backRect.color='white'
-                        onPressed:backRect.color='cdcdcd'
+                        onPressed:backRect.color='#cdcdcd'
                         onCanceled: backRect.color='white'
                         onClicked: {
                             emit:callback(JSON.stringify(usrLstModel.get(index)));
