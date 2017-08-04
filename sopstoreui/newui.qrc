@@ -52,5 +52,9 @@
         <file>qml/component/SlidesshowArea.qml</file>
         <file>qml/component/SwipeTab.qml</file>
         <file>qml/apps/SlidesshowIndicator.qml</file>
+        <file>qml/contacts/EnterpriseListContentListViewComponent.qml</file>
+        <file>qml/contacts/EnterpriseListTitleListViewComponent.qml</file>
+        <file>qml/component/CDoodHeaderImage.qml</file>
+        <file>qml/contacts/MemberDetailPage.qml</file>
     </qresource>
 </RCC>

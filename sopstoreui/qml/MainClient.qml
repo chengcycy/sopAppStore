@@ -51,8 +51,9 @@ CPage {
 
             onCurrentIndexChanged: {
                 if(currentIndex == 2){
-                    var EnOS = {enterID: 454, OrgID: '2920082168215965', type: 4}
-                    appClient.queryEnOS(JSON.stringify(EnOS))
+//                    var obj = JSON.parse(appClient.curUserInfo)
+//                    var EnOS = {enterId: 454, orgId: obj.unitId, type: 4}
+//                    appClient.queryEnOS(JSON.stringify(EnOS))
                 }
             }
 

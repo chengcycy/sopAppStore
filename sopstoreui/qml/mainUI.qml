@@ -104,6 +104,7 @@ CPageStackWindow {
             page.callback.connect(function(data){
                 startPage.userInfo = data;
                 appClient.curUserInfo = startPage.userInfo;
+                console.log(startPage.userInfo)
                 login();
             });
         }
