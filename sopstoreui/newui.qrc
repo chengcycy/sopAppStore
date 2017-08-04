@@ -63,5 +63,6 @@
         <file>qml/component/RectHeadComponent.qml</file>
         <file>qml/Helper.js</file>
         <file>qml/notice/SlideDelegate.qml</file>
+        <file>qml/component/NewTabView.qml</file>
     </qresource>
 </RCC>

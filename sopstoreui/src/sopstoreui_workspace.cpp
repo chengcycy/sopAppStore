@@ -35,8 +35,9 @@ void sopstoreui_Workspace::uninstall(QString params)
 
 void sopstoreui_Workspace::openApp(QString url)
 {
-    if(url.contains("browser:")){
+    if(url.contains("http")||url.contains("https")){
         mNeedNoticeRefreshData = true;
+        url = "browser:"+url;
     }
     qApp->openUrl(url);
 }
@@ -84,6 +85,17 @@ QUrl sopstoreui_Workspace::appUrl()
     return url;
 }
 
+QString sopstoreui_Workspace::sid()
+{
+    return mSid;
+}
+
+void sopstoreui_Workspace::setSid(QString data)
+{
+    mSid = QUuid::createUuid().toString().replace("{","").replace("}","").replace("-","");
+    emit sidChanged();
+}
+
 sopstoreui_Workspace::sopstoreui_Workspace()
     : CWorkspace()
 {
@@ -121,7 +133,7 @@ void sopstoreui_Workspace::onActive()
 {
     QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
     config.setValue("clientStatus",1);
-//    emit refreshData();
+    emit refreshData();
 }
 
 void sopstoreui_Workspace::onDeactive()

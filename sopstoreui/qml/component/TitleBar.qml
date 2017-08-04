@@ -12,14 +12,14 @@ Rectangle{
     property bool  showRedPoint: false
     signal clicked(int pos)
 
-    color:"#f7f7f7"
+    color:"#515151"
     height: 90
     width:parent.width
 
     Text{
         id:title
         font.pixelSize: 36
-
+        color: 'white'
         anchors.centerIn: parent
     }
     Image{

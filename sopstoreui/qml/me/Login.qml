@@ -96,7 +96,7 @@ CPage {
                 text:"于帅"
                 font.pixelSize: 30
                 placeholderText:os.i18n.ctr(qsTr("请输入用户名"))
-                inputMethodHints: Qt.ImhPreferLatin/*|Qt.ImhPreferNumbers*/
+                inputMethodHints: Qt.ImhNone/*|Qt.ImhPreferNumbers*/
                 inputMethodHintExtensions: {
                     var args = {};
                     args["enterKeyText"] = "next";
@@ -114,7 +114,7 @@ CPage {
                 onKeyPressed: {
                     if (key === Qt.Key_Return)
                     {
-                        userLineEdit.forceActiveFocus()
+                        passWordEdit.forceActiveFocus()
                     }
                 }
             }
@@ -250,10 +250,15 @@ CPage {
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
                 showUserLstPage(JSON.stringify(obj.data));
+                loadingPage.hide();
             }else if(obj.fName === 'login'){
                 showMainClientPage(json);
+            }else if(obj.fName === 'appInfos'){
+                pageStack.clear();
+                mainApp.sid='';
+                var page = pageStack.push(Qt.resolvedUrl('../MainClient.qml'));
+                loadingPage.hide();
             }
-            loadingPage.hide();
         }
     }
     function showUserLstPage(data){
@@ -274,6 +279,10 @@ CPage {
             });
         }
     }
+    function getMyAppList(){
+        var obj = {type: "1"}
+        appClient.queryAppStore(JSON.stringify(obj));
+    }
     function login(){
         var obj = JSON.parse(loginPage.userInfo);
         var data = {usbkeyidentification:obj.usbkeyidentification,password:loginPage.passwd}
@@ -285,8 +294,8 @@ CPage {
     function showMainClientPage(data){
         var obj = JSON.parse(data);
         if(obj.data.code === 0){
-            pageStack.clear();
-            var page = pageStack.push(Qt.resolvedUrl('../MainClient.qml'));
+            getMyAppList();
+
         }else{
             gToast.requestToast('登录失败:'+obj.data.code,"","");
         }

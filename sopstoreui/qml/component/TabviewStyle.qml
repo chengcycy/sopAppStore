@@ -6,7 +6,7 @@ Item {
     width: 100
     height: 120
     signal msgTabClick()
-    property var tips:""
+    property var tips:(mainClient.msgCount>99)?"99+":mainClient.msgCount
     /**
     @brief 被使用的CTabView
     */
@@ -65,8 +65,8 @@ Item {
         anchors.leftMargin: -width / 2 +2
         anchors.top: img.top
         anchors.topMargin: -height / 2 + 10
-        height: tiptxt.contentHeight+12
-        width: height
+        height: tiptxt.contentHeight+10
+        width: tiptxt.contentWidth+10<height?height:tiptxt.contentWidth+10
 
         radius: height/2
         color: "#f3362e"
@@ -74,7 +74,7 @@ Item {
         Text{
             id:tiptxt
             text:tips
-            font.pixelSize: 24
+            font.pixelSize: 20
             color:"white"
             anchors.centerIn: parent
         }

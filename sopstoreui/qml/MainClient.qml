@@ -9,6 +9,9 @@ import "./notice"
 CPage {
     id: mainClient
 
+    property string openAppUrl
+    property int    msgCount:0
+    property string baseUrl: 'http://ieop.casic.cs:8080/adp/mobileV2/formpostH5.ht?sid='+mainApp.sid+'&systemId='
     onStatusChanged: {
         if (status === CPageStatus.WillShow) {
             mainClient.statusBarHoldItemColor = "black"
@@ -22,9 +25,22 @@ CPage {
         }
     }
 
+    Connections{
+        target: appClient
+        onCallback:{
+            var obj = JSON.parse(json)
+            if(obj.fName === 'getLoginAuthCode'){
+                var authCode = obj.data.authCode;
+                var app = { "scheme": openAppUrl+'&authcode='+ authCode};
+                console.log('===============================openApp:'+JSON.stringify(app))
+                appClient.opensopApp(JSON.stringify(app));
+            }
+        }
+    }
 
     contentAreaItem: Item {
-        CTabView {
+        anchors.fill: parent
+        NewTabView{
             id:tabView
             tabPosition : Qt.BottomEdge
 
@@ -58,9 +74,10 @@ CPage {
 
             CTab {
                 id:sessionListTab
+                opacity: 1.0
                 property url imgSource: "qrc:/res/images/tab_notice.png"
                 property url imgActiveSource: imgSource
-                property bool newMessage:true
+                property bool newMessage:msgCount>0
 
                 title: os.i18n.ctr(qsTr("通知"))
                 NoticeMain{
@@ -70,6 +87,7 @@ CPage {
 
             CTab {
                 id:contactRootTab
+                opacity: 1.0
                 property url imgSource: "qrc:/res/images/tab_apps.png"
                 property url imgActiveSource: imgSource
                 property bool newMessage: false
@@ -83,6 +101,7 @@ CPage {
 
             CTab {
                 id:contactStoreTab
+                opacity: 1.0
                 property url imgSource: "qrc:/res/images/tab_contact.png"
                 property url imgActiveSource: imgSource
                 property bool newMessage: false
@@ -96,6 +115,7 @@ CPage {
 
             CTab {
                 id:userListTab
+                opacity: 1.0
                 property url imgSource: "qrc:/res/images/tab_me.png"
                 property url imgActiveSource: imgSource
                 property bool newMessage: false
