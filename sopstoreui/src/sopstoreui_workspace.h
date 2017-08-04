@@ -30,7 +30,7 @@ public:
     Q_INVOKABLE void install(QString params);
     Q_INVOKABLE void uninstall(QString params);
     Q_INVOKABLE void openApp(QString url);
-    Q_INVOKABLE void getSystemAppList();
+    Q_INVOKABLE QString getSystemAppList();
 
     QUrl    appUrl();
     sopstoreui_Workspace();

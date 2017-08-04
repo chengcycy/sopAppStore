@@ -115,7 +115,7 @@ Item {
             } else if(index === 0) {
             }
         }
-        onPressed: rectBack.color='blue'
+        onPressed: rectBack.color='#cdcdcd'
         onCanceled: rectBack.color='white'
         onReleased: rectBack.color='white'
     }

@@ -27,13 +27,20 @@ class  SopStoreClinet : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString curUserInfo READ curUserInfo WRITE setCurUserInfo NOTIFY curUserInfoChanged)
-
+    Q_PROPERTY(QString myApps READ myApps WRITE setMyApps NOTIFY myAppsChanged)
+    Q_PROPERTY(QString downloadingApps READ downloadingApps WRITE setDownloadingApps NOTIFY downloadingAppsChanged)
 public:
     explicit SopStoreClinet(QObject *parent = 0);
     ~SopStoreClinet();
 
     QString curUserInfo() const;
     void setCurUserInfo(const QString curUserInfo);
+
+    QString myApps() const;
+    void setMyApps(const QString json);
+
+    QString downloadingApps() const;
+    void setDownloadingApps(const QString json);
 
     //Q_INVOKABLE bool isInstallApp(QString userId,QString appId);
 
@@ -69,8 +76,9 @@ public:
     Q_INVOKABLE void getSystemAppList();
     Q_INVOKABLE void getLoginAuthCode(QString json);
     Q_INVOKABLE void getOfflineMsg();
-    Q_INVOKABLE bool isNetworkAvailable();
 
+    Q_INVOKABLE bool isNetworkAvailable();
+    Q_INVOKABLE QString dealTime(qint64 msgtime);
 signals:
     void voiceCall(QString param);
     void openApp(QString param);
@@ -81,7 +89,8 @@ signals:
     void getSystemApps();
     void loginoutUI();
     void curUserInfoChanged();
-
+    void myAppsChanged();
+    void downloadingAppsChanged();
 public slots:
     void onLoginAuthCodeResult(QString authCode);
     void onGetSystemApps(QString json);
@@ -115,6 +124,8 @@ private:
     void initDBusConnect();
     void jsonParce(QString json,QString fName);
     QString m_strCurUserInfo;
+    QString m_strApps;//缓存我的apps
+    QString m_strDownloadingApps;//记录正在下载app
 };
 
 #endif // SOPSTORECLINET_H

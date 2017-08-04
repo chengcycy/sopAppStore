@@ -1,10 +1,12 @@
 #include "sopstoreclinet.h"
 #include <QFileInfo>
-
+#include <QtMath>
 SopStoreClinet::SopStoreClinet(QObject *parent) :
     QObject(parent)
 {
 
+    m_strApps = "";
+    m_strDownloadingApps = "";
     initDBusConnect();
     connect(&mNetworkMgr,SIGNAL(networkStatusChanged(bool,CNetworkManager::NetworkType)),this,SLOT(onNetworkStatusChanged(bool,CNetworkManager::NetworkType)));
 }
@@ -26,6 +28,28 @@ void SopStoreClinet::setCurUserInfo(const QString curUserInfo)
         m_strCurUserInfo = curUserInfo;
         emit curUserInfoChanged();
     }
+}
+
+QString SopStoreClinet::myApps() const
+{
+    return m_strApps;
+}
+
+void SopStoreClinet::setMyApps(const QString json)
+{
+    m_strApps = json;
+    emit myAppsChanged();
+}
+
+QString SopStoreClinet::downloadingApps() const
+{
+    return m_strDownloadingApps;
+}
+
+void SopStoreClinet::setDownloadingApps(const QString json)
+{
+    m_strDownloadingApps = json;
+    emit downloadingAppsChanged();
 }
 
 void SopStoreClinet::writeData(QString content)
@@ -77,7 +101,6 @@ void SopStoreClinet::slidesshow(QString json)
 
 void SopStoreClinet::queryAppStore(QString json)
 {
-    qDebug()<<Q_FUNC_INFO<<"param:"<<json;
     GET_DATA_PARAMS(queryAppStore,json);
 }
 
@@ -217,6 +240,7 @@ void SopStoreClinet::onQueryAppStoreResult(QString json,int type)
     QString fName;
     if(type == 1){
         fName = "appInfos";
+        setMyApps(json);
     }else if(type == 2){
         fName = "appStores";
     }else if(type == 3){
@@ -396,4 +420,35 @@ void SopStoreClinet::jsonParce(QString json,QString fName)
         emit callback(docTmp.toJson());
     }
 }
-
+QString SopStoreClinet::dealTime(qint64 msgtime)
+{
+    QString strDateTime("");
+    QDateTime msgDateTime;
+    int distance = 0;
+    if (!msgtime)
+    {
+        return strDateTime;
+    }
+    msgDateTime.setMSecsSinceEpoch(msgtime);
+    distance = msgDateTime.daysTo(QDateTime::currentDateTime());
+    //今天
+    if (qFabs(distance) <= 0)
+    {
+        strDateTime = msgDateTime.toString("HH:mm");
+    }
+    //昨天
+    else if (qFabs(distance) <= 1)
+    {
+       strDateTime = "昨天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
+    }
+    //前天
+    else if (qFabs(distance) <= 2)
+    {
+        strDateTime = "前天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
+    }
+    else
+    {
+       strDateTime = msgDateTime.toString("MM月dd日") +QString::fromLocal8Bit(" ")+msgDateTime.toString("HH:mm");
+    }
+    return strDateTime;
+}

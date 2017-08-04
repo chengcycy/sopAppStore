@@ -20,7 +20,7 @@ QMAKE_LFLAGS += -Wl,-rpath=$$LIB_DIR -Wl,-Bsymbolic
 
 #qml.qrc
 RESOURCES +=  images.qrc \
-#    js.qrc \
+    js.qrc \
     newui.qrc
 
 HEADERS += src/sopstoreui_workspace.h

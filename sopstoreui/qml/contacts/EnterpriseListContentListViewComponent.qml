@@ -43,7 +43,7 @@ Rectangle{
                     else{
                         background.color = "#ffffff"
                         mousePressBackgroud.visible = false
-                        orgManager.setSel(id);
+                        pageStack.push(Qt.resolvedUrl('MemberDetailPage.qml'));
                     }
                 }
 
