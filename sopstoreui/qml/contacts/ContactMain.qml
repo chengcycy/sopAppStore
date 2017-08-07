@@ -68,6 +68,10 @@ Rectangle {
         onCallback: {
             var obj = JSON.parse(json)
             if (obj.fName === 'queryEnOS') {
+                if (obj.data.depts.length > 0) {
+                    listModel.clear()
+                }
+
                 for (var i = 0; i < obj.data.depts.length; i++) {
                     var item = {};
                     item.itemID = obj.data.depts[i].orgID + ''
