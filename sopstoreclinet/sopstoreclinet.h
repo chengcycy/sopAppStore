@@ -26,12 +26,16 @@
 class  SopStoreClinet : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool netStatus READ netStatus WRITE setNetStatus NOTIFY netStatusChanged)
     Q_PROPERTY(QString curUserInfo READ curUserInfo WRITE setCurUserInfo NOTIFY curUserInfoChanged)
     Q_PROPERTY(QString myApps READ myApps WRITE setMyApps NOTIFY myAppsChanged)
     Q_PROPERTY(QString downloadingApps READ downloadingApps WRITE setDownloadingApps NOTIFY downloadingAppsChanged)
 public:
     explicit SopStoreClinet(QObject *parent = 0);
     ~SopStoreClinet();
+
+    void setNetStatus(bool data);
+    bool netStatus();
 
     QString curUserInfo() const;
     void setCurUserInfo(const QString curUserInfo);
@@ -77,9 +81,8 @@ public:
     Q_INVOKABLE void getLoginAuthCode(QString json);
     Q_INVOKABLE QString getOfflineMsg();
 
-    Q_INVOKABLE bool isNetworkAvailable();
-    Q_INVOKABLE QString dealTime(qint64 msgtime);
 signals:
+    void netStatusChanged();
     void voiceCall(QString param);
     void openApp(QString param);
     void callback(QString json);
@@ -107,7 +110,7 @@ public slots:
     void onChangedPwdResult(QString json);
     void onNoticeLastMsg(QString msgContent);
     void onUpdateAccountResult(QString json);
-
+    void onNetChanged(int status);
 private slots:
 
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
@@ -120,12 +123,12 @@ private:
     QNetworkReply *mCurDownLoadReply;
     QFile mOutputFile;
     QJsonArray mJsonMsgs;
-    CNetworkManager mNetworkMgr;
     void initDBusConnect();
     void jsonParce(QString json,QString fName);
     QString m_strCurUserInfo;
     QString m_strApps;//缓存我的apps
     QString m_strDownloadingApps;//记录正在下载app
+    bool    m_netStatus;
 };
 
 #endif // SOPSTORECLINET_H

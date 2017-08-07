@@ -46,6 +46,7 @@ public:
     Q_INVOKABLE void getLoginAuthCode(QString json);
     Q_INVOKABLE void setMessageRead(QString json);
 signals:
+    void netChanged(int status);
     void preLoginResult(QString json);
     void loginResult(QString json);
     void loginoutResult(QString json);
@@ -61,6 +62,7 @@ signals:
     void getAccountInfoResult(QString json);
     void loginAuthCodeResult(QString authCode);
 private slots:
+    void onNetChange(int status);
     void onLoginAuthCodeResult(QString authCode);
     void onNoticeLastMsg(QString msgContent);
     void onSingalgetUsersByParamResult(QString josn);

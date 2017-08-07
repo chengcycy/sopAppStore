@@ -58,6 +58,10 @@ CPage {
                         id: tabviewStyle
                         width: tabView.width / tabView.tabModel.count
                         onMsgTabClick: {
+                            if(appClient.netStatus){
+                                noticeMain.refreshData();
+                                console.log('============refreshData========================')
+                            }
                         }
                     }
                     model: tabView.tabModel
@@ -65,11 +69,11 @@ CPage {
             }
 
             onCurrentIndexChanged: {
-//                if(currentIndex == 2){
-//                    var obj = JSON.parse(appClient.curUserInfo)
-//                    var EnOS = {enterId: 454, orgId: obj.unitId, type: 4}
-//                    appClient.queryEnOS(JSON.stringify(EnOS))
-//                }
+                //                if(currentIndex == 2){
+                //                    var obj = JSON.parse(appClient.curUserInfo)
+                //                    var EnOS = {enterId: 454, orgId: obj.unitId, type: 4}
+                //                    appClient.queryEnOS(JSON.stringify(EnOS))
+                //                }
             }
 
             CTab {
@@ -81,6 +85,7 @@ CPage {
 
                 title: os.i18n.ctr(qsTr("通知"))
                 NoticeMain{
+                    id:noticeMain
                     anchors.fill: parent
                 }
             }

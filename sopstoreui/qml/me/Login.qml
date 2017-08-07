@@ -93,7 +93,7 @@ CPage {
                 passwordLabelEnabled: false
                 clip: true
 
-                text:"于帅"
+                text:mainApp.usrName
                 font.pixelSize: 30
                 placeholderText:os.i18n.ctr(qsTr("请输入用户名"))
                 inputMethodHints: Qt.ImhNone/*|Qt.ImhPreferNumbers*/
@@ -158,7 +158,7 @@ CPage {
                 passwordLabelEnabled: false
                 echoMode: TextInput.Password
                 clip: true
-                text:"123456"
+                text:mainApp.usrPasswd
                 font.pixelSize: 30
                 placeholderText: os.i18n.ctr(qsTr("请输入密码"))
                 inputMethodHints: Qt.ImhPreferLatin
@@ -206,10 +206,10 @@ CPage {
 
                 backgroundComponent: Rectangle {
                     anchors.fill: parent
-                    color:"#313563"
-                    radius: 16
+                    color:"#3730e5"
+                    radius: 10
                     border.width: 3
-                    border.color: "#313563"
+                    border.color: "#3730e5"
                 }
 
                 onClicked: filckableInput.login()
@@ -264,7 +264,7 @@ CPage {
     function showUserLstPage(data){
         var arr = JSON.parse(data);
         if(arr.length === 0){
-            gToast.requestToast('登录失败',"","");
+            gToast.requestToast('您输入的用户名不存在!',"","");
         }else if(arr.length === 1){
             loginPage.userInfo = JSON.stringify(arr[0]);
             appClient.curUserInfo = loginPage.userInfo;
@@ -294,6 +294,8 @@ CPage {
     function showMainClientPage(data){
         var obj = JSON.parse(data);
         if(obj.data.code === 0){
+            mainApp.usrName = srvLineEdit.text;
+            mainApp.usrPasswd = passWordEdit.text;
             getMyAppList();
 
         }else{

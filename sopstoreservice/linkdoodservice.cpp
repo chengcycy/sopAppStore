@@ -139,6 +139,7 @@ void LinkDoodService::connectS()
     QObject::connect(mpAuthService.get(),SIGNAL(changePasswordResult(int)),this,SLOT(onChangedPwdResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(updateAccountResult(int)),this,SLOT(onUpdateAccountInfoResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginoutResult(int)),this,SLOT(onLoginoutResult(int)));
+    QObject::connect(mpAuthService.get(),SIGNAL(netChange(int)),this,SLOT(onNetChange(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginResult(int)),this,SLOT(onLoginResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginAuthCodeResult(QString)),this,SLOT(onLoginAuthCodeResult(QString)));
 }
@@ -366,6 +367,11 @@ void LinkDoodService::setMessageRead(QString json)
 {
     QJsonObject obj = jsonParce(json);
     mpAuthService->setMsgRead(obj.value("targetId").toDouble(),obj.value("msgId").toDouble());
+}
+
+void LinkDoodService::onNetChange(int status)
+{
+    emit netChanged(status);
 }
 
 void LinkDoodService::onLoginAuthCodeResult(QString authCode)
