@@ -250,13 +250,13 @@ CPage {
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
                 showUserLstPage(JSON.stringify(obj.data));
-                loadingPage.hide();
             }else if(obj.fName === 'login'){
                 showMainClientPage(json);
             }else if(obj.fName === 'appInfos'){
                 pageStack.clear();
                 mainApp.sid='';
                 var page = pageStack.push(Qt.resolvedUrl('../MainClient.qml'));
+                appClient.getAccountInfo();
                 loadingPage.hide();
             }
         }
@@ -264,7 +264,9 @@ CPage {
     function showUserLstPage(data){
         var arr = JSON.parse(data);
         if(arr.length === 0){
+            loadingPage.hide();
             gToast.requestToast('您输入的用户名不存在!',"","");
+
         }else if(arr.length === 1){
             loginPage.userInfo = JSON.stringify(arr[0]);
             appClient.curUserInfo = loginPage.userInfo;
@@ -297,8 +299,6 @@ CPage {
             mainApp.usrName = srvLineEdit.text;
             mainApp.usrPasswd = passWordEdit.text;
             getMyAppList();
-            appClient.getAccountInfo();
-
         }else{
             switch (obj.data.code) {
             case 112: gToast.requestToast('用户名或密码错误'); break;

@@ -10,6 +10,7 @@ CPage {
     property alias position: positionInfo.contentText
     property alias telNum: telNumInfo.contentText
     property alias moblieNum: mobileNumInfo.contentText
+    property var  userObj: JSON.parse(appClient.curUserInfo)
 
     statusBarHoldEnabled: false
     onStatusChanged: {
@@ -114,7 +115,9 @@ CPage {
                 sourceSize.height: 40
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {}
+                    onClicked: {
+                        appClient.callPhone(telNum)
+                    }
                 }
             }
         }
@@ -134,7 +137,9 @@ CPage {
                 sourceSize.height: 40
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {}
+                    onClicked: {
+                        appClient.callPhone(moblieNum)
+                    }
                 }
             }
             Image {
@@ -146,7 +151,11 @@ CPage {
                 sourceSize.height: 40
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {}
+                    onClicked: {
+                        //打开应用
+                        var app1 = {"scheme":"linkdood:showlinkdood?id=" +userObj.usbkeyidentification + "&pwd=123456"};
+                        appClient.opensopApp(JSON.stringify(app1))
+                    }
                 }
             }
             Image {
@@ -158,7 +167,11 @@ CPage {
                 sourceSize.height: 40
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {}
+                    onClicked: {
+                        //发短信
+                        var data={scheme:"sms:"+ moblieNum +"?body="};
+                        appClient.opensopApp(JSON.stringify(data))
+                    }
                 }
             }
         }
