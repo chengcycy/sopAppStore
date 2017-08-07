@@ -13,6 +13,7 @@ CSwipeTabView{
             var jsonObj = JSON.parse(data);
             obj.imageSource = jsonObj.img;
             obj.url = jsonObj.url;
+             obj.title = jsonObj.title;
         }
     }
     function startTimer(){

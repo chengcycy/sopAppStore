@@ -128,7 +128,14 @@ Rectangle{
         for(var i=0;i<obj.data.length;++i){
             slides.addPage(JSON.stringify(obj.data[i]));
         }
-        getMyAppList();
+        if(appClient.myApps !== ""){
+            var obj2 = JSON.parse(appClient.myApps);
+            handleMyApps(obj2.appInfos);
+        }else{
+             getMyAppList();
+        }
+
+
     }
     function handleMyApps(obj){
         myApps.myAppsModel.clear();

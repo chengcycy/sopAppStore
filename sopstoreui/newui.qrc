@@ -64,5 +64,6 @@
         <file>qml/Helper.js</file>
         <file>qml/notice/SlideDelegate.qml</file>
         <file>qml/contacts/UserInfoItem.qml</file>
+        <file>qml/component/NewTabView.qml</file>
     </qresource>
 </RCC>

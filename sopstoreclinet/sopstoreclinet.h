@@ -75,7 +75,7 @@ public:
     Q_INVOKABLE void getAppLoginStatus();
     Q_INVOKABLE void getSystemAppList();
     Q_INVOKABLE void getLoginAuthCode(QString json);
-    Q_INVOKABLE void getOfflineMsg();
+    Q_INVOKABLE QString getOfflineMsg();
 
     Q_INVOKABLE bool isNetworkAvailable();
     Q_INVOKABLE QString dealTime(qint64 msgtime);

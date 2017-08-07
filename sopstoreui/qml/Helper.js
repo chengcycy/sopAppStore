@@ -14,6 +14,7 @@ function requestHttps(url,cb) {
     httpRequest.onerror = function() {
         console.log('error')
     }
+//    httpRequest.setRequestHeader('Content-Type','charset=utf-8');
     httpRequest.open('GET', encodeURI(url),true)
     httpRequest.send();
 }

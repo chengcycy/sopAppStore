@@ -17,18 +17,6 @@ Item{
         return false;
     }
 
-    Connections{
-        target: appClient
-        onCallback:{
-            var obj = JSON.parse(json)
-            if(obj.fName === 'getLoginAuthCode'){
-                var authCode = obj.data.authCode;
-                var app = { "scheme": openAppUrl+'&authcode='+ authCode};
-                appClient.opensopApp(JSON.stringify(app));
-            }
-        }
-    }
-
     ListModel{
         id:myAppsLstModel
     }
@@ -153,13 +141,18 @@ Item{
 
                                         newUrl = type===1?activityName:homeUrl;
                                         newUrl = newUrl.replace("{{idCard}}",key);
-                                        myApps.openAppUrl = newUrl+'&appsecret='+secret;
+                                        if(type === 2){
+                                            var appUrl = { "scheme": newUrl }
+                                            appClient.opensopApp(JSON.stringify(appUrl));
+                                        }else{
+                                            mainClient.openAppUrl = newUrl+'&appsecret='+secret;
 
-                                        var data = {appID: key + ""};
-                                        appClient.getLoginAuthCode(JSON.stringify(data));
+                                            var data = {appID: key + ""};
+                                            appClient.getLoginAuthCode(JSON.stringify(data));
+                                        }
                                     }
                                     var userInfor = JSON.parse(appClient.curUserInfo);
-                                    var statisticalData = JSON.stringify({ type: "8", appType: "2", appID: id + "", orgID: userInfor.orgID, unitID: userInfor.unitId, orgCode: userInfor.orgCode })
+                                    var statisticalData = JSON.stringify({ type: "8", appType: type+'', appID: id + "", orgID: userInfor.orgID, unitID: userInfor.unitId, orgCode: userInfor.orgCode })
                                     appClient.queryAppStore(statisticalData);
                                 }
                             }

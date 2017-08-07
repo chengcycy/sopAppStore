@@ -14,7 +14,7 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
 SopStoreClinet::~SopStoreClinet()
 {
     qDebug()<<Q_FUNC_INFO;
-    //    loginout();
+    m_strApps = "";
 }
 
 QString SopStoreClinet::curUserInfo() const
@@ -162,15 +162,16 @@ void SopStoreClinet::getLoginAuthCode(QString json)
     GET_DATA_PARAMS(getLoginAuthCode,json);
 }
 
-void SopStoreClinet::getOfflineMsg()
+QString SopStoreClinet::getOfflineMsg()
 {
     QJsonDocument doc;
     doc.setArray(mJsonMsgs);
-    jsonParce(doc.toJson(),"getOfflineMsg");
+    //    jsonParce(doc.toJson(),"getOfflineMsg");
 
     while(mJsonMsgs.size()>0){
         mJsonMsgs.removeAt(mJsonMsgs.size()-1);
     }
+    return doc.toJson();
 }
 
 bool SopStoreClinet::isNetworkAvailable()
@@ -200,8 +201,8 @@ void SopStoreClinet::onGetSystemApps(QString json)
 }
 void SopStoreClinet::onRefreshData(QString json)
 {
-    qDebug()<<Q_FUNC_INFO<<"onRefreshData:"<<json;
-    emit jsonParce(json,"refreshData");
+    //    qDebug()<<Q_FUNC_INFO<<"onRefreshData:"<<json;
+    //    emit jsonParce(json,"refreshData");
 }
 
 void SopStoreClinet::onLoginResult(QString json)
@@ -221,7 +222,7 @@ void SopStoreClinet::onLoginoutResult(QString json)
 void SopStoreClinet::onPreLoginResult(QString json)
 {
     jsonParce(json,"preLogin");
-    //     emit loginoutUI();
+    m_strApps = "";
 }
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)
@@ -379,8 +380,6 @@ void SopStoreClinet::callPhone(QString json)
 void SopStoreClinet::opensopApp(QString json)
 {
     if(json.contains("http")||json.contains("https")){
-        json = json.replace("http", "browser");
-        json = json.replace("https", "browser");
     }
     emit openApp(json);
 }
@@ -439,7 +438,7 @@ QString SopStoreClinet::dealTime(qint64 msgtime)
     //昨天
     else if (qFabs(distance) <= 1)
     {
-       strDateTime = "昨天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
+        strDateTime = "昨天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
     }
     //前天
     else if (qFabs(distance) <= 2)
@@ -448,7 +447,7 @@ QString SopStoreClinet::dealTime(qint64 msgtime)
     }
     else
     {
-       strDateTime = msgDateTime.toString("MM月dd日") +QString::fromLocal8Bit(" ")+msgDateTime.toString("HH:mm");
+        strDateTime = msgDateTime.toString("MM月dd日") +QString::fromLocal8Bit(" ")+msgDateTime.toString("HH:mm");
     }
     return strDateTime;
 }

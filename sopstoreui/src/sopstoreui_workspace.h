@@ -12,6 +12,7 @@
 #include <SyberosServiceCache>
 #include <SyberosGuiCache>
 #include <cgui_application.h>
+#include <QUuid>
 #include "cprocessmanager.h"
 
 #include "cpackageinfo.h"
@@ -24,6 +25,7 @@ class sopstoreui_Workspace : public CWorkspace
 {
     Q_OBJECT
     Q_PROPERTY(QUrl appUrl READ appUrl NOTIFY appUrlChanged)
+    Q_PROPERTY(QString sid READ sid WRITE setSid NOTIFY sidChanged)
 public:
     Q_INVOKABLE int  pageType(QString url);
     Q_INVOKABLE void voiceCall(QString phone);
@@ -33,6 +35,9 @@ public:
     Q_INVOKABLE QString getSystemAppList();
 
     QUrl    appUrl();
+    QString sid();
+    void setSid(QString data);
+
     sopstoreui_Workspace();
     virtual ~sopstoreui_Workspace();
     void onActive();
@@ -43,6 +48,7 @@ signals:
     void appUrlChanged();
     void refreshData();
     void systemApps(QString json);
+    void sidChanged();
 public slots:
     void closeBrowser();
     void onInstallStatusChanged(const QString& sopid,
@@ -54,6 +60,7 @@ private:
     QSharedPointer<SopStoreClinet> mpClient;
     QQuickView *m_view;
     QSharedPointer<CSystemPackageManager> mSysPkgMgr;
+    QString    mSid;
     bool       mNeedNoticeRefreshData;
 };
 #endif //__SOPSTOREUI_WORKSPACE__
