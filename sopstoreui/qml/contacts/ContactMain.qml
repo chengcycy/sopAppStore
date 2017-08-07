@@ -11,7 +11,7 @@ Rectangle {
         titleModel.clear()
         listModel.clear()
         var obj = JSON.parse(appClient.curUserInfo)
-        titleModel.append({orgID: obj.unitId, orgName: obj.unitName, operType: 4})
+        titleModel.append({orgID: obj.unitId, orgName: obj.unitName})
         var EnOS = {enterId: 454, orgId: obj.unitId, type: 4}
         appClient.queryEnOS(JSON.stringify(EnOS))
         console.log('curUserInfo:' + appClient.curUserInfo)
@@ -45,7 +45,6 @@ Rectangle {
         ListElement {
             orgID: ''
             orgName: ''
-            operType: 4
         }
     }
 
@@ -58,6 +57,9 @@ Rectangle {
             isDepart: true
             subOrgCount: 0
             subMemberCount: 0
+            position: ''
+            telNum: ''
+            mobileNum: ''
         }
     }
 
@@ -81,6 +83,9 @@ Rectangle {
                     item.itemID = obj.data.entUsers[i].orgID + ''
                     item.name = obj.data.entUsers[i].enName
                     item.orgName = obj.data.entUsers[i].orgName
+                    item.position = obj.data.entUsers[i].duty
+                    item.telNum = obj.data.entUsers[i].telPhone
+                    item.mobileNum = obj.data.entUsers[i].enMobile
                     item.isDepart = false
                     listModel.append(item)
                     console.log('item:' + JSON.stringify(item))
@@ -99,7 +104,7 @@ Rectangle {
     Connections {
         target: organizationContentList
         onClickOrg: {
-            titleModel.append({orgID: id, orgName: name, operType: type})
+            titleModel.append({orgID: id, orgName: name})
             listModel.clear()
         }
     }

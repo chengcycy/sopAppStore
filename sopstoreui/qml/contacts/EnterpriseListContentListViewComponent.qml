@@ -5,7 +5,7 @@ import "../component"
 Rectangle{
     id: contentListView_root
     property alias model: orgListView.model
-    signal clickOrg(var id, string name, var type)
+    signal clickOrg(var id, string name)
     //anchors.fill: parent
     color:"transparent"
 
@@ -35,15 +35,19 @@ Rectangle{
                     background.color = "#ffffff"
                     mousePressBackgroud.visible = false
                     if(isDepart){
-                        var EnOS = {enterId: 454, orgId: itemID};
-                        EnOS.type = subOrgCount > 0 ? 4 : 3;
-                        emit: clickOrg(itemID, name, EnOS.type);
+                        var EnOS = {enterId: 454, orgId: itemID, type: 4};
+                        emit: clickOrg(itemID, name);
+                        appClient.queryEnOS(JSON.stringify(EnOS));
+
+                        EnOS.type = 3;
                         appClient.queryEnOS(JSON.stringify(EnOS));
                     }
                     else{
                         background.color = "#ffffff"
                         mousePressBackgroud.visible = false
-                        pageStack.push(Qt.resolvedUrl('MemberDetailPage.qml'));
+                        var parameter = {userName: name, department: orgName, position: position,
+                                         telNum: telNum, mobileNum: mobileNum}
+                        pageStack.push(Qt.resolvedUrl('MemberDetailPage.qml'), parameter);
                     }
                 }
 

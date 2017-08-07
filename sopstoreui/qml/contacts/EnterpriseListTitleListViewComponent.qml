@@ -50,7 +50,9 @@ Rectangle{
 
                     emit: clickOrg();
 
-                    var EnOS = {enterId: 454, orgId: orgID, type: operType};
+                    var EnOS = {enterId: 454, orgId: orgID, type: 4};
+                    appClient.queryEnOS(JSON.stringify(EnOS));
+                    EnOS.type = 3;
                     appClient.queryEnOS(JSON.stringify(EnOS));
                 }
             }
