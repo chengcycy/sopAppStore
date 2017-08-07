@@ -26,6 +26,7 @@
 class  SopStoreClinet : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString profile READ profile WRITE setProfile NOTIFY profileChanged)
     Q_PROPERTY(bool netStatus READ netStatus WRITE setNetStatus NOTIFY netStatusChanged)
     Q_PROPERTY(QString curUserInfo READ curUserInfo WRITE setCurUserInfo NOTIFY curUserInfoChanged)
     Q_PROPERTY(QString myApps READ myApps WRITE setMyApps NOTIFY myAppsChanged)
@@ -33,6 +34,10 @@ class  SopStoreClinet : public QObject
 public:
     explicit SopStoreClinet(QObject *parent = 0);
     ~SopStoreClinet();
+
+
+    void setProfile(QString data);
+    QString profile();
 
     void setNetStatus(bool data);
     bool netStatus();
@@ -82,6 +87,7 @@ public:
     Q_INVOKABLE QString getOfflineMsg();
 
 signals:
+    void profileChanged();
     void netStatusChanged();
     void voiceCall(QString param);
     void openApp(QString param);
@@ -129,6 +135,7 @@ private:
     QString m_strApps;//缓存我的apps
     QString m_strDownloadingApps;//记录正在下载app
     bool    m_netStatus;
+    QString m_strProfile;//用户扩展信息
 };
 
 #endif // SOPSTORECLINET_H

@@ -161,7 +161,7 @@ Rectangle{
                     CLine {
                         anchors.left: parent.left
                         anchors.bottom: parent.bottom
-                        color:"#e6ebe6"
+                        color:"#dedfdc"
                         z: parent.z+2
                     }
                 }

@@ -37,6 +37,7 @@ Item {
             onStatusChanged: {
                 if (src.status === Image.Error || src.status === Image.Null) {
                     roundImage.visible = false
+                    console.log('============load src fail.=====================')
                 } else if (src.status === Image.Ready) {
                     roundImage.visible = true
                 }

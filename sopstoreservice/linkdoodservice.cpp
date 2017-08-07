@@ -235,7 +235,7 @@ void LinkDoodService::queryAppStore(QString json)
     type = obj.value("type").toString().toInt();
     if(type == 2){
         appStoreQueryParam.userId = mpAuthService->userId();
-        appStoreQueryParam.pageSize = 50;
+        appStoreQueryParam.pageSize = 100;
         appStoreQueryParam.appClassifyId = 0;
         appStoreQueryParam.searchType = 2;
         appStoreQueryParam.pageNum = 1;
@@ -781,6 +781,10 @@ void LinkDoodService::onUpdateAccountInfoResult(int code)
     qDebug()<<Q_FUNC_INFO<<"code:"<<code;
     QString json="{\"code\":"+QString::number(code)+"}";
     emit updateAccountInfoResult(json);
+    if(code == 0){
+        getAccountInfo();
+    }
+
 }
 
 void LinkDoodService::onChangedPwdResult(int code)

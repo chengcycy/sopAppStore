@@ -17,6 +17,17 @@ SopStoreClinet::~SopStoreClinet()
     m_netStatus = true;
 }
 
+void SopStoreClinet::setProfile(QString data)
+{
+    m_strProfile = data;
+    emit profileChanged();
+}
+
+QString SopStoreClinet::profile()
+{
+    return m_strProfile;
+}
+
 void SopStoreClinet::setNetStatus(bool data)
 {
     m_netStatus = data;
@@ -227,7 +238,9 @@ void SopStoreClinet::onPreLoginResult(QString json)
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)
 {
-    jsonParce(json,"getAccountInfo");
+    //    jsonParce(json,"getAccountInfo");
+    qDebug()<<Q_FUNC_INFO<<"==============:"<<json;
+    setProfile(json);
 }
 
 void SopStoreClinet::onSlidesshowResult(QString json)

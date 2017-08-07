@@ -65,5 +65,8 @@
         <file>qml/notice/SlideDelegate.qml</file>
         <file>qml/contacts/UserInfoItem.qml</file>
         <file>qml/component/NewTabView.qml</file>
+        <file>qml/component/SetButton.qml</file>
+        <file>qml/component/ListDialog.qml</file>
+        <file>qml/me/ChangePasswd.qml</file>
     </qresource>
 </RCC>

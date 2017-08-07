@@ -297,9 +297,14 @@ CPage {
             mainApp.usrName = srvLineEdit.text;
             mainApp.usrPasswd = passWordEdit.text;
             getMyAppList();
+            appClient.getAccountInfo();
 
         }else{
-            gToast.requestToast('登录失败:'+obj.data.code,"","");
+            switch (obj.data.code) {
+            case 112: gToast.requestToast('用户名或密码错误'); break;
+            default: gToast.requestToast('登录失败:' +obj.data.code,"","");
+            }
+            loadingPage.hide();
         }
     }
 }

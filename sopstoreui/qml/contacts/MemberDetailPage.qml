@@ -29,7 +29,7 @@ CPage {
         Rectangle {
             id: background
             anchors.fill: parent
-            color: '#eef3ee'
+            color: '#f7f3f7'
         }
 
         TitleBar {
