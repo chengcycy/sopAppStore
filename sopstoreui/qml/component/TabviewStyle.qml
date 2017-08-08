@@ -97,19 +97,14 @@ Item {
         anchors.fill: parent
 
         onClicked: {
-//            rectBack.color='blue'
-
             if(tabView.currentIndex != index){
                 tabView.currentIndex = index
             }
-            else{
-                if(index == 0){
-                    emit:msgTabClick();
-                }
+            if(tabView.currentIndex == 0){
+                emit:msgTabClick();
             }
         }
         onDoubleClicked: {
-//            rectBack.color='blue'
             if(tabView.currentIndex !== index) {
                 tabView.currentIndex = index
             } else if(index === 0) {

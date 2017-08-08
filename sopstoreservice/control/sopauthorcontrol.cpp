@@ -20,6 +20,7 @@ SopAuthorControl::SopAuthorControl(QObject *parent) : QObject(parent)
     connect(this,SIGNAL(removeNitifications(QString)),m_pWorkControl,SLOT(onRemoveNitification(QString)));
     connect(this,SIGNAL(bcNotify(QString,QString,QString,QString,QString,QString,QString,QString,int)),m_pWorkControl,SLOT(onBcNotify(QString,QString,QString,QString,QString,QString,QString,QString,int)));
     mWorkThread.start();
+    m_pAuthorService->regNetChangedCb(std::bind(&SopAuthorControl::_regNetChangedCb,this,std::placeholders::_1));
     m_pChatService->regOfflineMsgCb(std::bind(&SopAuthorControl::_regOfflineMsgCb,this,std::placeholders::_1));
     m_pChatService->regMsgNoticeCb(std::bind(&SopAuthorControl::_msgNoticeCb,this,std::placeholders::_1));
     m_pChatService->regRecontactCb(std::bind(&SopAuthorControl::_recontactCb,this,std::placeholders::_1,std::placeholders::_2));
@@ -113,6 +114,11 @@ void SopAuthorControl::_regOfflineMsgCb(std::vector<OfflineMsg> &msgs)
 void SopAuthorControl::setMsgRead(qint64 targetId, qint64 msgId)
 {
     m_pChatService->setMessageRead(targetId,msgId);
+}
+
+void SopAuthorControl::_regNetChangedCb(int flag)
+{
+    emit netChange(flag);
 }
 
 void SopAuthorControl::updateAccountInfo(Account user)

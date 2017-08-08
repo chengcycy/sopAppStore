@@ -69,5 +69,8 @@
         <file>qml/contacts/ContactsSearchPage.qml</file>
         <file>qml/contacts/SearchEdit.qml</file>
         <file>qml/component/TipBand.qml</file>
+        <file>qml/component/SetButton.qml</file>
+        <file>qml/component/ListDialog.qml</file>
+        <file>qml/me/ChangePasswd.qml</file>
     </qresource>
 </RCC>

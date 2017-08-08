@@ -139,6 +139,7 @@ void LinkDoodService::connectS()
     QObject::connect(mpAuthService.get(),SIGNAL(changePasswordResult(int)),this,SLOT(onChangedPwdResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(updateAccountResult(int)),this,SLOT(onUpdateAccountInfoResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginoutResult(int)),this,SLOT(onLoginoutResult(int)));
+    QObject::connect(mpAuthService.get(),SIGNAL(netChange(int)),this,SLOT(onNetChange(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginResult(int)),this,SLOT(onLoginResult(int)));
     QObject::connect(mpAuthService.get(),SIGNAL(loginAuthCodeResult(QString)),this,SLOT(onLoginAuthCodeResult(QString)));
 }
@@ -234,7 +235,7 @@ void LinkDoodService::queryAppStore(QString json)
     type = obj.value("type").toString().toInt();
     if(type == 2){
         appStoreQueryParam.userId = mpAuthService->userId();
-        appStoreQueryParam.pageSize = 50;
+        appStoreQueryParam.pageSize = 100;
         appStoreQueryParam.appClassifyId = 0;
         appStoreQueryParam.searchType = 2;
         appStoreQueryParam.pageNum = 1;
@@ -366,6 +367,11 @@ void LinkDoodService::setMessageRead(QString json)
 {
     QJsonObject obj = jsonParce(json);
     mpAuthService->setMsgRead(obj.value("targetId").toDouble(),obj.value("msgId").toDouble());
+}
+
+void LinkDoodService::onNetChange(int status)
+{
+    emit netChanged(status);
 }
 
 void LinkDoodService::onLoginAuthCodeResult(QString authCode)
@@ -775,6 +781,10 @@ void LinkDoodService::onUpdateAccountInfoResult(int code)
     qDebug()<<Q_FUNC_INFO<<"code:"<<code;
     QString json="{\"code\":"+QString::number(code)+"}";
     emit updateAccountInfoResult(json);
+    if(code == 0){
+        getAccountInfo();
+    }
+
 }
 
 void LinkDoodService::onChangedPwdResult(int code)

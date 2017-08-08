@@ -43,5 +43,6 @@
         <file>res/images/update.png</file>
         <file>res/images/loading.gif</file>
         <file>res/images/rm_app.png</file>
+        <file>res/images/arrow_right.png</file>
     </qresource>
 </RCC>

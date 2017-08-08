@@ -23,7 +23,7 @@ Rectangle{
 
                 onPressed: {
                     if(mousePressBackgroud.visible){
-                        background.color = "#ffffff"
+                        background.color = "#f7f3f7"
                         mousePressBackgroud.visible = false
                     }else{
                         background.color = "#dcdcdc"
@@ -32,7 +32,7 @@ Rectangle{
                 }
 
                 onReleased: {
-                    background.color = "#ffffff"
+                    background.color = "#f7f3f7"
                     mousePressBackgroud.visible = false
                     if(isDepart){
                         var EnOS = {enterId: 454, orgId: itemID, type: 4};
@@ -43,7 +43,7 @@ Rectangle{
                         appClient.queryEnOS(JSON.stringify(EnOS));
                     }
                     else{
-                        background.color = "#ffffff"
+                        background.color = "#f7f3f7"
                         mousePressBackgroud.visible = false
                         var parameter = {userName: name, department: orgName, position: position,
                                          telNum: telNum, mobileNum: mobileNum}
@@ -52,7 +52,7 @@ Rectangle{
                 }
 
                 onCanceled: {
-                    background.color = "#ffffff"
+                    background.color = "#f7f3f7"
                     mousePressBackgroud.visible = false
                 }
             }
@@ -60,7 +60,7 @@ Rectangle{
             Rectangle {
                 width: contactListDelegate.width
                 height: contactListDelegate.height
-                color:"#ffffff"
+                color:"#f7f3f7"
 
 
                 Rectangle {
@@ -73,7 +73,7 @@ Rectangle{
                 Rectangle {
                     id : background
                     anchors.fill: parent
-                    color:"#ffffff"
+                    color:"#f7f3f7"
 
                     CDoodHeaderImage{
                         id: portraitImage
@@ -161,7 +161,7 @@ Rectangle{
                     CLine {
                         anchors.left: parent.left
                         anchors.bottom: parent.bottom
-                        color:"#e6ebe6"
+                        color:"#dedfdc"
                         z: parent.z+2
                     }
                 }

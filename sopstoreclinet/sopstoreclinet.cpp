@@ -8,13 +8,35 @@ SopStoreClinet::SopStoreClinet(QObject *parent) :
     m_strApps = "";
     m_strDownloadingApps = "";
     initDBusConnect();
-    connect(&mNetworkMgr,SIGNAL(networkStatusChanged(bool,CNetworkManager::NetworkType)),this,SLOT(onNetworkStatusChanged(bool,CNetworkManager::NetworkType)));
 }
 
 SopStoreClinet::~SopStoreClinet()
 {
     qDebug()<<Q_FUNC_INFO;
     m_strApps = "";
+    m_netStatus = true;
+}
+
+void SopStoreClinet::setProfile(QString data)
+{
+    m_strProfile = data;
+    emit profileChanged();
+}
+
+QString SopStoreClinet::profile()
+{
+    return m_strProfile;
+}
+
+void SopStoreClinet::setNetStatus(bool data)
+{
+    m_netStatus = data;
+    emit netStatusChanged();
+}
+
+bool SopStoreClinet::netStatus()
+{
+    return m_netStatus;
 }
 
 QString SopStoreClinet::curUserInfo() const
@@ -174,17 +196,6 @@ QString SopStoreClinet::getOfflineMsg()
     return doc.toJson();
 }
 
-bool SopStoreClinet::isNetworkAvailable()
-{
-    bool status = mNetworkMgr.isNetworkAvailable();
-    qDebug()<<Q_FUNC_INFO<<"networkStatus:"<<status;
-    QJsonDocument doc;
-    QJsonObject obj;
-    obj.insert("status",status);
-    doc.setObject(obj);
-    emit jsonParce(doc.toJson(),"isNetworkAvailable");
-}
-
 void SopStoreClinet::onLoginAuthCodeResult(QString authCode)
 {
     qDebug()<<Q_FUNC_INFO<<"authCode:"<<authCode;
@@ -227,7 +238,9 @@ void SopStoreClinet::onPreLoginResult(QString json)
 
 void SopStoreClinet::onGetAccountInfoResult(QString json)
 {
-    jsonParce(json,"getAccountInfo");
+    //    jsonParce(json,"getAccountInfo");
+    qDebug()<<Q_FUNC_INFO<<"==============:"<<json;
+    setProfile(json);
 }
 
 void SopStoreClinet::onSlidesshowResult(QString json)
@@ -297,6 +310,12 @@ void SopStoreClinet::onNoticeLastMsg(QString msgContent)
 void SopStoreClinet::onUpdateAccountResult(QString json)
 {
     jsonParce(json,"updateAccount");
+}
+
+void SopStoreClinet::onNetChanged(int status)
+{
+    qDebug()<<Q_FUNC_INFO<<"status:"<<status;
+    setNetStatus(status == 0);
 }
 
 void SopStoreClinet::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
@@ -398,6 +417,7 @@ void SopStoreClinet::initDBusConnect()
     CONNECT_DEBUS(getAccountInfoResult,GetAccountInfoResult(QString));
     CONNECT_DEBUS(getAppLoginStatusResult,GetAppLoginStatusResult(QString));
     CONNECT_DEBUS(loginAuthCodeResult,LoginAuthCodeResult(QString));
+    CONNECT_DEBUS(netChanged,NetChanged(int));
 }
 
 void SopStoreClinet::jsonParce(QString json,QString fName)
@@ -418,36 +438,4 @@ void SopStoreClinet::jsonParce(QString json,QString fName)
         qDebug()<<Q_FUNC_INFO<<"callback:"<<docTmp.toJson();
         emit callback(docTmp.toJson());
     }
-}
-QString SopStoreClinet::dealTime(qint64 msgtime)
-{
-    QString strDateTime("");
-    QDateTime msgDateTime;
-    int distance = 0;
-    if (!msgtime)
-    {
-        return strDateTime;
-    }
-    msgDateTime.setMSecsSinceEpoch(msgtime);
-    distance = msgDateTime.daysTo(QDateTime::currentDateTime());
-    //今天
-    if (qFabs(distance) <= 0)
-    {
-        strDateTime = msgDateTime.toString("HH:mm");
-    }
-    //昨天
-    else if (qFabs(distance) <= 1)
-    {
-        strDateTime = "昨天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
-    }
-    //前天
-    else if (qFabs(distance) <= 2)
-    {
-        strDateTime = "前天" + QString::fromLocal8Bit(" ") + msgDateTime.toString("HH:mm");
-    }
-    else
-    {
-        strDateTime = msgDateTime.toString("MM月dd日") +QString::fromLocal8Bit(" ")+msgDateTime.toString("HH:mm");
-    }
-    return strDateTime;
 }

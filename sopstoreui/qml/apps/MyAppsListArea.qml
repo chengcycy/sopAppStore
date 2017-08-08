@@ -152,7 +152,7 @@ Item{
                                         }
                                     }
                                     var userInfor = JSON.parse(appClient.curUserInfo);
-                                    var statisticalData = JSON.stringify({ type: "8", appType: type+'', appID: id + "", orgID: userInfor.orgID, unitID: userInfor.unitId, orgCode: userInfor.orgCode })
+                                    var statisticalData = JSON.stringify({ type: "8", appType: type+'', appID: id + "", orgID: userInfor.orgID+'', unitID: userInfor.unitId+'', orgCode: userInfor.orgCode+'' })
                                     appClient.queryAppStore(statisticalData);
                                 }
                             }

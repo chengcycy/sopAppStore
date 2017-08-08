@@ -60,6 +60,32 @@ QString sopstoreui_Workspace::getSystemAppList()
     return json;
 }
 
+void sopstoreui_Workspace::setUsrName(QString nm)
+{
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("usrNm",nm);
+    emit usrNameChanged();
+}
+
+void sopstoreui_Workspace::setUsrPasswd(QString pwd)
+{
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    config.setValue("usrPwd",pwd);
+    emit usrPasswdChanged();
+}
+
+QString sopstoreui_Workspace::usrName()
+{
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    return config.value("usrNm","").toString();
+}
+
+QString sopstoreui_Workspace::usrPasswd()
+{
+    QSettings config(APP_DATA_CONFIG,QSettings::IniFormat);
+    return config.value("usrPwd","").toString();
+}
+
 void sopstoreui_Workspace::closeBrowser()
 {
     qDebug()<<Q_FUNC_INFO<<"==================closeBrowser===========================";

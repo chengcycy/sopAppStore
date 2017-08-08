@@ -93,7 +93,7 @@ CPage {
                 passwordLabelEnabled: false
                 clip: true
 
-                text:"于帅"
+                text:mainApp.usrName
                 font.pixelSize: 30
                 placeholderText:os.i18n.ctr(qsTr("请输入用户名"))
                 inputMethodHints: Qt.ImhNone/*|Qt.ImhPreferNumbers*/
@@ -158,7 +158,7 @@ CPage {
                 passwordLabelEnabled: false
                 echoMode: TextInput.Password
                 clip: true
-                text:"123456"
+                text:mainApp.usrPasswd
                 font.pixelSize: 30
                 placeholderText: os.i18n.ctr(qsTr("请输入密码"))
                 inputMethodHints: Qt.ImhPreferLatin
@@ -206,10 +206,10 @@ CPage {
 
                 backgroundComponent: Rectangle {
                     anchors.fill: parent
-                    color:"#313563"
-                    radius: 16
+                    color:"#3730e5"
+                    radius: 10
                     border.width: 3
-                    border.color: "#313563"
+                    border.color: "#3730e5"
                 }
 
                 onClicked: filckableInput.login()
@@ -250,13 +250,13 @@ CPage {
             var obj = JSON.parse(json);
             if(obj.fName === 'preLogin'){
                 showUserLstPage(JSON.stringify(obj.data));
-                loadingPage.hide();
             }else if(obj.fName === 'login'){
                 showMainClientPage(json);
             }else if(obj.fName === 'appInfos'){
                 pageStack.clear();
                 mainApp.sid='';
                 var page = pageStack.push(Qt.resolvedUrl('../MainClient.qml'));
+                appClient.getAccountInfo();
                 loadingPage.hide();
             }
         }
@@ -264,7 +264,9 @@ CPage {
     function showUserLstPage(data){
         var arr = JSON.parse(data);
         if(arr.length === 0){
-            gToast.requestToast('登录失败',"","");
+            loadingPage.hide();
+            gToast.requestToast('您输入的用户名不存在!',"","");
+
         }else if(arr.length === 1){
             loginPage.userInfo = JSON.stringify(arr[0]);
             appClient.curUserInfo = loginPage.userInfo;
@@ -294,10 +296,15 @@ CPage {
     function showMainClientPage(data){
         var obj = JSON.parse(data);
         if(obj.data.code === 0){
+            mainApp.usrName = srvLineEdit.text;
+            mainApp.usrPasswd = passWordEdit.text;
             getMyAppList();
-
         }else{
-            gToast.requestToast('登录失败:'+obj.data.code,"","");
+            switch (obj.data.code) {
+            case 112: gToast.requestToast('用户名或密码错误'); break;
+            default: gToast.requestToast('登录失败:' +obj.data.code,"","");
+            }
+            loadingPage.hide();
         }
     }
 }

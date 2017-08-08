@@ -26,6 +26,9 @@ class sopstoreui_Workspace : public CWorkspace
     Q_OBJECT
     Q_PROPERTY(QUrl appUrl READ appUrl NOTIFY appUrlChanged)
     Q_PROPERTY(QString sid READ sid WRITE setSid NOTIFY sidChanged)
+
+    Q_PROPERTY(QString usrName READ usrName WRITE setUsrName NOTIFY usrNameChanged)
+    Q_PROPERTY(QString usrPasswd READ usrPasswd WRITE setUsrPasswd NOTIFY usrPasswdChanged)
 public:
     Q_INVOKABLE int  pageType(QString url);
     Q_INVOKABLE void voiceCall(QString phone);
@@ -33,6 +36,11 @@ public:
     Q_INVOKABLE void uninstall(QString params);
     Q_INVOKABLE void openApp(QString url);
     Q_INVOKABLE QString getSystemAppList();
+
+    void setUsrName(QString nm);
+    void setUsrPasswd(QString pwd);
+    QString usrName();
+    QString usrPasswd();
 
     QUrl    appUrl();
     QString sid();
@@ -49,6 +57,9 @@ signals:
     void refreshData();
     void systemApps(QString json);
     void sidChanged();
+    void usrNameChanged();
+    void usrPasswdChanged();
+
 public slots:
     void closeBrowser();
     void onInstallStatusChanged(const QString& sopid,

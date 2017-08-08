@@ -10,6 +10,7 @@ class SopAuthorControl : public QObject
     Q_OBJECT
 public:
     explicit SopAuthorControl(QObject *parent = 0);
+
     int64 login(std::string user,  std::string pwd,  std::string server);
     void  logout();
     void  changePassword(QString oldPwd,QString newPwd);
@@ -22,6 +23,8 @@ public:
     void _regOfflineMsgCb(std::vector<OfflineMsg>&msgs);
     void setMsgRead(qint64 targetId,qint64 msgId);
 
+    void _regNetChangedCb(int flag);
+
     void updateAccountInfo(Account user);
     void _updateAccountInfo(service::ErrorInfo code);
 
@@ -31,6 +34,7 @@ public:
     void getLoginAuthCode(oauthReq req);
     void _getLoginAuthCode(service::ErrorInfo code, const std::string& authCode);
 signals:
+    void netChange(int status);
     void loginAuthCodeResult(QString authCode);
     void loginResult(int code);
     void loginoutResult(int code);

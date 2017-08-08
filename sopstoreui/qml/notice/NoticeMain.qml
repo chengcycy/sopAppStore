@@ -12,6 +12,15 @@ Rectangle{
     property bool needRefreshData: false
     //////////////////////////////////////////////////////////////////
 
+    function refreshData(){
+        if((userObj.unitId+'') === "1"){
+            getXTBG();
+        }else{
+            getGWGL();
+        }
+        getMail();
+    }
+
     function handleOfflineMsg(){
         var msgs = JSON.parse(appClient.getOfflineMsg());
         console.log('//////////////////////////////////////');
@@ -38,7 +47,7 @@ Rectangle{
                 time: formatTime(appMsg.time),
                 notice:  msgObj.showUnread ? appMsg.unReadCount+'':"0",
                                              url: newUrl,
-                                             statistics: '{"type":"8","appType":"'+app.type+'","appID":"'+app.id+'","orgID":'+userObj.orgID+',"unitID":'+userObj.unitId+',"orgCode":'+userObj.orgCode+'}'
+                                             statistics: '{"type":"8","appType":"'+app.type+'","appID":"'+app.id+'","orgID":'+(userObj.orgID+'')+',"unitID":'+(userObj.unitId+'')+',"orgCode":'+(userObj.orgCode+'')+'}'
             };
 
             var index = -1;
@@ -128,7 +137,7 @@ Rectangle{
                 time: '',
                 notice: '',
                 url: 'http://10.152.36.26:8080/page_m/dblist.jsp?userName=' +userObj.enname + '&PID=' + userObj.usbkeyidentification + '&webService=',
-                statistics: '{"type":"8","appType":"2","appID":"100000","orgID":'+userObj.orgID+',"unitID":'+userObj.unitId+',"orgCode":'+userObj.orgCode+'}'
+                statistics: '{"type":"8","appType":"2","appID":"100000","orgID":'+(userObj.orgID+'')+',"unitID":'+(userObj.unitId+'')+',"orgCode":'+(userObj.orgCode+'')+'}'
             }
             noticeModel.insert(0,XXFB);
             getXTBG();
@@ -142,7 +151,7 @@ Rectangle{
                 time: '',
                 notice: "0",
                 url: 'casicoa:showOA?pid='+userObj.usbkeyidentification+'&sessionID=54545333' ,
-                statistics: '{"type":"8","appType":"1","appID":"100001","orgID":'+userObj.orgID+',"unitID":'+userObj.unitId+',"orgCode":'+userObj.orgCode+'}'
+                statistics: '{"type":"8","appType":"1","appID":"100001","orgID":'+(userObj.orgID+'')+',"unitID":'+(userObj.unitId+'')+',"orgCode":'+(userObj.orgCode+'')+'}'
             };
             noticeModel.insert(0,noticeData);
             getGWGL();
@@ -156,7 +165,7 @@ Rectangle{
             time: '',
             notice: '0',
             url: 'http://10.152.36.20/secmail/loginapp.do?type=cid&type2=Unread&PID='+userObj.usbkeyidentification,
-            statistics: '{"type":"8","appType":"2","appID":"100004","orgID":'+userObj.orgID+',"unitID":'+userObj.unitId+',"orgCode":'+userObj.orgCode+'}'
+            statistics: '{"type":"8","appType":"2","appID":"100004","orgID":'+(userObj.orgID+'')+',"unitID":'+(userObj.unitId+'')+',"orgCode":'+(userObj.orgCode+'')+'}'
         }
         noticeModel.insert(1,AQYJ);
         getMail();
@@ -170,8 +179,9 @@ Rectangle{
             if (data.pageData.length > 0) {
                 var date = Date.parse(data.pageData[0].startTime.replace(/-/gi, "/"))
                 var number = data.pageData.length
+                mainClient.msgCount -=parseInt(noticeModel.get(0).notice);
                 mainClient.msgCount +=number;
-//                if (number > 99) number = '99+'
+                //                if (number > 99) number = '99+'
                 noticeModel.setProperty(0,'msg',data.pageData[0]["wfInstance.description"]);
                 noticeModel.setProperty(0,'time',formatTime(date));
                 noticeModel.setProperty(0,'notice',number+'');
@@ -187,8 +197,9 @@ Rectangle{
             console.log('getXTBG:'+res);
 
             var number = parseInt(cutString(res, "wdNum>", "<"))
+            mainClient.msgCount -=parseInt(noticeModel.get(0).notice);
             mainClient.msgCount +=number;
-//            if (number > 99) number = '99+'
+            //            if (number > 99) number = '99+'
             var date = Date.parse(cutString(res, "SentTime>", "<").replace(/-/gi, "/"))
             noticeModel.setProperty(0,'msg',cutString(res, "Title>", "<"));
             noticeModel.setProperty(0,'time',formatTime(date));
@@ -204,8 +215,9 @@ Rectangle{
             if (data.length > 0) {
                 var date = Date.parse(data[0].send_date.replace(/-/gi, "/"))
                 var number = parseInt(data[0].count)
+                mainClient.msgCount -=parseInt(noticeModel.get(1).notice);
                 mainClient.msgCount +=number;
-//                if (number > 99) number = '99+'
+                //                if (number > 99) number = '99+'
                 noticeModel.setProperty(1,'msg',data[0].subject);
                 noticeModel.setProperty(1,'time',formatTime(date));
                 noticeModel.setProperty(1,'notice',number+'');
@@ -285,11 +297,29 @@ Rectangle{
         id: noticeLst
 
         anchors.top: titleBar.bottom
-        anchors.topMargin: 2
+        anchors.topMargin: 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         property var selectedItem: null
+
+        header:Item{
+
+            visible: !appClient.netStatus
+            width:parent.width
+            height: visible ? 80 : 0
+            Rectangle{
+                id:headerIndicator
+                anchors.fill: parent
+                color: '#e8989f'
+                Text{
+                    text:'网络连接不可用'
+                    color: 'white'
+                    font.pixelSize: 28
+                    anchors.centerIn: parent
+                }
+            }
+        }
 
         clip: true
         function unsetSelectedItem()
@@ -350,19 +380,21 @@ Rectangle{
                         appClient.queryAppStore(statistics);
                         if(isSysApp(id)){
                             needRefreshData = true;
-                            var pos = index==0?1:0;
-                            var countMsg = parseInt(noticeModel.get(pos).notice);
-                            mainClient.msgCount -=countMsg;
+                            //                            var pos = index==0?1:0;
+                            //                            var countMsg = parseInt(noticeModel.get(pos).notice);
+                            //                            mainClient.msgCount -=countMsg;
+                            //                            if(mainClient.msgCount<0){
+                            //                                mainClient.msgCount = 0;
+                            //                            }
+                        }else{
+                            var count = parseInt(notice);
+                            mainClient.msgCount -= count;
                             if(mainClient.msgCount<0){
                                 mainClient.msgCount = 0;
                             }
+                            noticeModel.setProperty(index,'notice','0');
+
                         }
-                        var count = parseInt(notice);
-                        mainClient.msgCount -= count;
-                        if(mainClient.msgCount<0){
-                            mainClient.msgCount = 0;
-                        }
-                        noticeModel.setProperty(index,'notice','0');
                     }
 
                     onSlideFinished: {
