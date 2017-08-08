@@ -22,6 +22,11 @@ Rectangle {
         anchors.top: parent.top
         tips: qsTr("通讯录")
         ico:"qrc:/res/images/search.png"
+        onClicked: {
+            if (pos === 0) {
+                pageStack.push(Qt.resolvedUrl('ContactsSearchPage.qml'));
+            }
+        }
     }
 
     EnterpriseListTitleListViewComponent {

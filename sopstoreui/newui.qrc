@@ -65,5 +65,9 @@
         <file>qml/notice/SlideDelegate.qml</file>
         <file>qml/contacts/UserInfoItem.qml</file>
         <file>qml/component/NewTabView.qml</file>
+        <file>qml/me/SettingButton.qml</file>
+        <file>qml/contacts/ContactsSearchPage.qml</file>
+        <file>qml/contacts/SearchEdit.qml</file>
+        <file>qml/component/TipBand.qml</file>
     </qresource>
 </RCC>
